@@ -34,6 +34,9 @@ $(document).ready(function(){
                         success:function(e){
                             mostrarAlerta("success", "¡Registrado con éxito!");
                             $("#formularioDependenciaSede")[0].reset();
+                            // Limpiar los select2
+                            $("#select_sede").val(null).trigger('change');
+                            $("#select_dependencia").val(null).trigger('change');
                             listarDependenciaSedes();
                         }
                     });
@@ -175,9 +178,9 @@ $(document).ready(function(){
 
                     var resultado = JSON.parse(result);
 
-                    $("#select_sede").val(resultado[0].id_sede);
-                    $("#select_dependencia").val(resultado[0].id_dependencia);
-                    $("#select_estado").val(resultado[0].estado);
+                    $("#select_sede").val(resultado[0].id_sede).trigger('change');
+                    $("#select_dependencia").val(resultado[0].id_dependencia).trigger('change');
+                    $("#select_estado").val(resultado[0].estado).trigger('change');
 
                     txt_iddependenciasede.setAttribute("data-iddependenciasede", resultado[0].id_dependencia_sede);
                 }else{
@@ -217,15 +220,27 @@ $(document).ready(function(){
                         type:'GET',
                         data: datos,
                         success:function(e){
-                            mostrarAlerta("success", "¡Modificado con éxito!");
+                            let respuesta = JSON.parse(e);
 
-                            $("#formularioDependenciaSede")[0].reset();
-                            $("#Aviso").html("Registrar Dependencia/Sede");
-                            botonActualizar.classList.add('asignar');
-                            botonGuardar.classList.remove('asignar');
-                            div_estado.classList.add('asignar');
-                            
-                            listarDependenciaSedes();
+                            if(respuesta.resultado == 1){
+                                
+                                mostrarAlerta("success", "¡Modificado con éxito!");
+    
+                                $("#formularioDependenciaSede")[0].reset();
+                                // Limpiar los select2
+                                $("#select_sede").val(null).trigger('change');
+                                $("#select_dependencia").val(null).trigger('change');
+                                $("#Aviso").html("Registrar Dependencia/Sede");
+                                botonActualizar.classList.add('asignar');
+                                botonGuardar.classList.remove('asignar');
+                                div_estado.classList.add('asignar');
+                                
+                                listarDependenciaSedes();
+                            }else if(respuesta.resultado == 2){
+                                mostrarAlerta("error","¡Relación Sede-Dependencia ya registrado!");
+                            } else {
+                                mostrarAlerta("error","¡Error desconocido al modificar!");
+                            }
                         }
                     });
                 }
@@ -235,6 +250,11 @@ $(document).ready(function(){
 
     $("#cancelar").click(function(){
         $("#formularioDependenciaSede")[0].reset();
+
+        // Limpiar los select2
+        $("#select_sede").val(null).trigger('change');
+        $("#select_dependencia").val(null).trigger('change');
+
         $("#Aviso").html("Registrar Dependencia/Sede");
         botonActualizar.classList.add('asignar');
         botonGuardar.classList.remove('asignar');
@@ -254,7 +274,7 @@ $(document).ready(function(){
         let idsede = $("#select_sede").val();
         let iddependencia = $("#select_dependencia").val();
 
-        if(idsede == "" || iddependencia == ""){
+        if(idsede == undefined || iddependencia == undefined){
             mostrarAlerta("warning", "¡Complete los datos necesarios!");
         }else {
             var datos = {

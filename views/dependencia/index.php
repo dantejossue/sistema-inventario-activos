@@ -13,58 +13,71 @@ if ($_SESSION['nivelacceso'] != "ADMINISTRADOR") {
 </style>
 
 <div class="row">
-    <div class="col-md-3">
-        <div class=" card card-outline card-info">
-            <div class="card-header">
+    <div class="col-md-12">
+        <h3 class="mb-3" style="font-size: 22px" ><b>Gestión De Dependencias / Áreas</b></h3>
+        <div class=" card card-outline">
+            <!-- <div class="card-header">
                 <p class="card-title mt-1" style="font-size: 22px" id="Aviso">Registrar Dependencia</p>
-            </div>
+            </div> -->
             <!-- /.card-header -->
             <div class="card-body">
-                <form action="" id="formularioDependencia">
-                    <div class="form-group">
-                        <div class="row">
-                            <!-- <div class="col-md-12">
-                                <label for="nombres">Nombres:</label>
-                                <input id="nombres" class="form-control form-control-border">
+                <div class="row">
+                    <div class="col-md-10">
+                        <form action="" id="formularioDependencia">
+                            <div class="form-group mb-0">
+                                <div class="row">
+                                    <!-- <div class="col-md-12">
+                                        <label for="nombres">Nombres:</label>
+                                        <input id="nombres" class="form-control form-control-border">
+                                    </div>
+                                    <div class="col-md-12 mt-3">
+                                        <label for="apellidos">Apellidos:</label>
+                                        <input id="apellidos" class="form-control form-control-border">
+                                    </div> -->
+                                    <div class="col-md-4">
+                                        <label for="nombredependencia">Nombre de dependencia:</label>
+                                        <input id="nombredependencia" class="form-control" placeholder="...">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="descripcion" id="label_contrasena">Descripción:</label>
+                                        <textarea id="descripcion" class="form-control" rows="1" placeholder="..."></textarea>
+                                    </div>
+                                    <div class="col-md-2 asignar" id="div_estado">
+                                        <label for="">Estado:</label>
+                                        <select name="" id="select_estado" class="form-control">
+                                            <option value="" selected disabled>-- Seleccione estado --</option>
+                                            <option value="ACTIVO">ACTIVO</option>
+                                            <option value="INACTIVO">INACTIVO</option>
+                                        </select>
+                                    </div>
+                                    <input type="hidden" id="iddependencia">
+                                </div>
                             </div>
-                            <div class="col-md-12 mt-3">
-                                <label for="apellidos">Apellidos:</label>
-                                <input id="apellidos" class="form-control form-control-border">
-                            </div> -->
-                            <div class="col-md-12 mt-3">
-                                <label for="nombredependencia">Nombre de dependencia:</label>
-                                <input id="nombredependencia" class="form-control form-control-border">
-                            </div>
-                            <div class="col-md-12 mt-3">
-                                <label for="descripcion" id="label_contrasena">Descripción:</label>
-                                <textarea id="descripcion" class="form-control form-control-border" rows="3"></textarea>
-                            </div>
-                            <div class="col-12 mt-3 asignar" id="div_estado">
-                                <label for="">Estado:</label>
-                                <select name="" id="select_estado" class="form-control form-control-border">
-                                    <option value="" selected disabled>-- Seleccione estado --</option>
-                                    <option value="ACTIVO">ACTIVO</option>
-                                    <option value="INACTIVO">INACTIVO</option>
-                                </select>
-                            </div>
-                            <input type="hidden" id="iddependencia">
+                        </form>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end justify-content-end">
+                        <div class="text-right bg-white">
+                            <button type="reset" class="btn bg-secondary" id="cancelar">Cancelar</button>
+                            <button type="button" class="btn btn-info" id="registrar">Guardar</button>
+                            <button type="button" class="btn bg-info asignar" id="actualizar">Actualizar</button>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
             <!-- /.card-body -->
-            <div class="card-footer text-right bg-white">
+            <!-- <div class="card-footer text-right bg-white">
                 <button type="reset" class="btn bg-gradient-secondary" id="cancelar">Cancelar</button>
                 <button type="button" class="btn bg-gradient-info" id="registrar">Guardar</button>
                 <button type="button" class="btn bg-gradient-info asignar" id="actualizar">Actualizar</button>
-            </div>
+            </div> -->
             <!-- /.card-footer -->
         </div>
     </div>
-    <div class="col-md-9">
+
+    <div class="col-md-12">
         <div class=" card card-outline card-info">
             <div class="card-header">
-                <p class="card-title" style="font-size: 22px">Lista de Dependencias</p>
+                <p class="card-title" style="font-size: 20px"><b>Lista de Dependencias</b></p>
             </div>
             <div class="card-body table-responsive">
                 <table class="table" id="tablaDependencia">

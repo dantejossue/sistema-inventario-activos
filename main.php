@@ -29,6 +29,8 @@
   <link rel="stylesheet" href="views/switch.css">
 	<link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
 
+  <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
+
   <!-- <script src="https://cdn.tiny.cloud/1/4wqx4j9cpb6doqzr81ox1xrsx2e9fgddsqtvmdx1mwij8gr8/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script> -->
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
@@ -179,6 +181,14 @@
                     </a>
                   </li>
                   <li class='nav-item'>
+                    <a href='main.php?view=cargo' class='nav-link'>
+                      <i class='fas fa-solid fa-briefcase nav-icon'></i>
+                      <p>cargo</p>
+                    </a>
+                  </li>
+                  
+                  <li class='nav-header' style='background-color:#292929'>Dependencia</li>
+                  <li class='nav-item'>
                     <a href='main.php?view=dependencia' class='nav-link'>
                       <i class='fas fa-sitemap nav-icon'></i>
                       <p>Dependencias</p>
@@ -196,12 +206,7 @@
                       <p>Dependencia/Sede</p>
                     </a>
                   </li>
-                  <li class='nav-item'>
-                    <a href='main.php?view=cargo' class='nav-link'>
-                      <i class='fas fa-link nav-icon'></i>
-                      <p>cargo</p>
-                    </a>
-                  </li>
+                  
                 ";
               }  
             ?>
@@ -286,6 +291,10 @@
   <script src="plugins/jquery/jquery.min.js"></script>
   <!-- Bootstrap -->
   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- select2 -->
+  <script src="plugins/select2/js/select2.min.js"></script>
+  
   <!-- AdminLTE App -->
   <script src="dist/js/adminlte.js"></script>
 

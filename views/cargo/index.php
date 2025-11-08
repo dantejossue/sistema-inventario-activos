@@ -16,42 +16,41 @@ if ($_SESSION['nivelacceso'] != "ADMINISTRADOR") {
     <div class="col-md-3">
         <div class=" card card-outline card-info">
             <div class="card-header">
-                <p class="text-title mt-1 font-weight-bold" style="font-size: 22px" id="Aviso">Registrar Dependencia/Sede</p>
+                <p class="card-title mt-1 text-info" style="font-size: 22px" id="Aviso"><b>Registrar Cargo</b></p>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <form action="" id="formularioDependenciaSede">
+                <form action="" id="formularioSede">
                     <div class="form-group">
                         <div class="row">
-
-                            <div class="col-12 mt-3" id="div_sede">
-                                <label for="select_sede">Sede:</label>
-                                <select name="select_sede" id="select_sede" class="form-control select2" style="width: 100%;">
-
-                                </select>
+                            <!-- <div class="col-md-12">
+                                <label for="nombres">Nombres:</label>
+                                <input id="nombres" class="form-control form-control-border">
                             </div>
-                            <div class="col-12 mt-3" id="div_dependencia">
-                                <label for="select_dependencia">Dependencia:</label>
-                                <select name="select_dependencia" id="select_dependencia" class="form-control select2" style="width: 100%;">
-
-                                </select>
+                            <div class="col-md-12 mt-3">
+                                <label for="apellidos">Apellidos:</label>
+                                <input id="apellidos" class="form-control form-control-border">
+                            </div> -->
+                            <div class="col-md-12 mt-3">
+                                <label for="nombrecargo">Nombre de Cargo:</label>
+                                <input id="nombrecargo" class="form-control form-control-border">
                             </div>
                             <div class="col-12 mt-3 asignar" id="div_estado">
                                 <label for="">Estado:</label>
-                                <select name="" id="select_estado" class="form-control">
+                                <select name="" id="select_estado" class="form-control form-control-border">
                                     <option value="" selected disabled>-- Seleccione estado --</option>
                                     <option value="ACTIVO">ACTIVO</option>
                                     <option value="INACTIVO">INACTIVO</option>
                                 </select>
                             </div>
-                            <input type="hidden" id="iddependenciasede">
+                            <input type="hidden" id="idsede">
                         </div>
                     </div>
                 </form>
             </div>
             <!-- /.card-body -->
             <div class="card-footer text-right bg-white">
-                <button type="button" class="btn bg-gradient-secondary" id="cancelar">Cancelar</button>
+                <button type="reset" class="btn bg-gradient-secondary" id="cancelar">Cancelar</button>
                 <button type="button" class="btn bg-gradient-info" id="registrar">Guardar</button>
                 <button type="button" class="btn bg-gradient-info asignar" id="actualizar">Actualizar</button>
             </div>
@@ -61,21 +60,21 @@ if ($_SESSION['nivelacceso'] != "ADMINISTRADOR") {
     <div class="col-md-9">
         <div class=" card card-outline card-info">
             <div class="card-header">
-                <p class="card-title font-weight-bold" style="font-size: 22px" >Lista de Dependencia/Sede</p>
+                <p class="card-title text-info" style="font-size: 22px"><b>Lista de Cargos</b></p>
             </div>
             <div class="card-body table-responsive">
-                <table class="table" id="tablaDependenciaSede">
+                <table class="table" id="tablaSede">
                     <thead>
                         <tr>
                             <th class="text-center">N°</th>
                             <th class="text-center">Nombre Sede</th>
-                            <th class="text-center">Nombre Dependencia</th>
+                            <th class="text-center">Ubicación</th>
                             <!-- <th class="text-center">Cargo</th> -->
                             <th class="text-center">Estado</th>
                             <th class="text-center">Acción</th>
                         </tr>
                     </thead>
-                    <tbody class="table" id="datosDependenciaSede">
+                    <tbody class="table" id="datosSede">
                         <!-- Se carga de manera dinamica -->
                     </tbody>
                 </table>
@@ -85,9 +84,4 @@ if ($_SESSION['nivelacceso'] != "ADMINISTRADOR") {
 </div>
 
 
-<script src="js/dependencia_sede.js"></script>
-<script>
-    $(document).ready(()=>{
-        $('.select2').select2();
-    })
-</script>
+<script src="js/cargo.js"></script>
