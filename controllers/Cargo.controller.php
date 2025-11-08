@@ -19,25 +19,18 @@ if (isset($_GET['op'])){
   }
 
 
- if ($_GET['op'] == 'registrarPersona'){
+ if ($_GET['op'] == 'registrarCargo'){
 
-    $persona->registrarPersona([
+    $cargo->registrarCargo([
       // "nombres"       => $_GET["nombres"],
       // "apellidos"     => $_GET["apellidos"],
-      "p_nro" => $_GET["txt_nro"],
-      "p_nom" => $_GET["txt_nom"],
-      "p_apepa" => $_GET["txt_apepa"],
-      "p_apema" => $_GET["txt_apema"],
-      "p_fnac" => $_GET["txt_fnac"],
-      "p_movil" => $_GET["txt_movil"],
-      "p_dire" => $_GET["txt_dire"],
-      "p_email" => $_GET["txt_email"],
+      "_nombrecargo" => $_GET["nombrecargo"]
       
     ]);
  }
 
-  if ($_GET['op'] == 'listarPersonas') {
-    $rows = $persona->listarPersona();
+  if ($_GET['op'] == 'listarCargo') {
+    $rows = $cargo->listarCargo();
     if (!empty($rows)) {
       $i = 1;
       foreach ($rows as $r) {
@@ -50,14 +43,10 @@ if (isset($_GET['op'])){
         echo "
           <tr>
             <td class='text-center'>{$i}</td>
-            <td class='text-center'>{$r->nro_documento}</td>
-            <td class='text-center'>{$r->npersona}</td>
-            <td class='text-center'>{$r->nro_movil}</td>
-            <td class='text-center'>{$r->per_email}</td>
-            <td class='text-center'>{$r->per_direccion}</td>
+            <td class='text-center'>{$r->nombre_cargo}</td>
             <td class='text-center'>{$badge}</td>
             <td class='text-center'>
-              <a href='#' data-idpersona='{$r->id_persona}' class='btn btn-sm btn-outline-secondary modificar'>
+              <a href='#' data-idcargo='{$r->id_cargo}' class='btn btn-sm btn-outline-secondary modificar'>
                 <i class='fas fa-edit'></i>
               </a>
             </td>
@@ -68,8 +57,8 @@ if (isset($_GET['op'])){
     exit;
   }
 
-  if ($_GET['op'] == 'dniYaExiste'){
-    $datosObtenidos = $persona->dniYaExiste(["nro_dni" => $_GET['nro_dni']]);
+  if ($_GET['op'] == 'cargoExistente'){
+    $datosObtenidos = $cargo->cargoExistente(["_nombrecargo" => $_GET['nombrecargo']]);
 
     if(count($datosObtenidos) == 0){
       echo 2;
@@ -81,26 +70,19 @@ if (isset($_GET['op'])){
     }
   }
 
-  if($_GET['op'] == 'modificarPersona'){
-    $resultado = $persona->modificarPersona([
-      "p_id"     => $_GET["idpersona"],
-      "p_nro"    => $_GET["txt_nro_editar"],
-      "p_nom"    => $_GET["txt_nom_editar"],
-      "p_apepa"  => $_GET["txt_apepa_editar"],
-      "p_apema"  => $_GET["txt_apema_editar"],
-      "p_fnac"   => $_GET["txt_fnac_editar"],
-      "p_movil"  => $_GET["txt_movil_editar"],
-      "p_dire"   => $_GET["txt_dire_editar"],
-      "p_email"  => $_GET["txt_email_editar"],
-      "p_esta"   => $_GET["select_estatus_editar"]
+  if($_GET['op'] == 'modificarCargo'){
+    $resultado = $cargo->modificarCargo([
+      "_idcargo"     => $_GET["idcargo"],
+      "_nombrecargo"    => $_GET["nombrecargo"],
+      "_select_estado"    => $_GET["select_estado"]
     ]);
 
     // El SP devuelve un array con "resultado" => 1 o 2
     echo json_encode($resultado[0]);
   }
   
-  if($_GET['op'] == 'getPersona'){
-    $data = $persona->getPersona(["idpersona" => $_GET['idpersona']]);
+  if($_GET['op'] == 'getCargo'){
+    $data = $cargo->getCargo(["_idcargo" => $_GET['idcargo']]);
 
     echo json_encode($data);
   }

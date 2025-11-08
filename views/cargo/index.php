@@ -20,7 +20,7 @@ if ($_SESSION['nivelacceso'] != "ADMINISTRADOR") {
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <form action="" id="formularioSede">
+                <form action="" id="formularioCargo">
                     <div class="form-group">
                         <div class="row">
                             <!-- <div class="col-md-12">
@@ -43,7 +43,7 @@ if ($_SESSION['nivelacceso'] != "ADMINISTRADOR") {
                                     <option value="INACTIVO">INACTIVO</option>
                                 </select>
                             </div>
-                            <input type="hidden" id="idsede">
+                            <input type="hidden" id="idcargo">
                         </div>
                     </div>
                 </form>
@@ -63,18 +63,18 @@ if ($_SESSION['nivelacceso'] != "ADMINISTRADOR") {
                 <p class="card-title text-info" style="font-size: 22px"><b>Lista de Cargos</b></p>
             </div>
             <div class="card-body table-responsive">
-                <table class="table" id="tablaSede">
+                <table class="table" id="tablaCargo">
                     <thead>
                         <tr>
                             <th class="text-center">N°</th>
-                            <th class="text-center">Nombre Sede</th>
-                            <th class="text-center">Ubicación</th>
+                            <th class="text-center">Nombre Cargo</th>
+                            <!-- <th class="text-center">Fecha Registro</th> -->
                             <!-- <th class="text-center">Cargo</th> -->
                             <th class="text-center">Estado</th>
                             <th class="text-center">Acción</th>
                         </tr>
                     </thead>
-                    <tbody class="table" id="datosSede">
+                    <tbody class="table" id="datosCargo">
                         <!-- Se carga de manera dinamica -->
                     </tbody>
                 </table>

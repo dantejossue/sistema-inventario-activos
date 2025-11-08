@@ -12,42 +12,42 @@ class Cargo extends ModelMaster{
         }
     }
     
-    public function listarPersona(){
+    public function listarCargo(){
         try{
-          return parent::getRows("spu_persona_listar");
+          return parent::getRows("spu_cargo_listar");
         }catch(Exception $error){
           die($error->getMessage());
         }
     }
 
-    public function registrarPersona(array $data){
+    public function registrarCargo(array $data){
         try{
-            parent::execProcedure($data, "	spu_persona_registrar", false);
+            parent::execProcedure($data, "	spu_cargo_registrar", false);
         }catch(Exception $error){
             die($error->getMessage());
         }
     }
 
-    public function dniYaExiste(array $data){
+    public function cargoExistente(array $data){
         try{
-            return parent::execProcedureLogin($data, "spu_dnipersona_existente", true);
+            return parent::execProcedureLogin($data, "spu_cargo_existente", true);
         }
         catch (Exception $error){
             die($error->getMessage());
         }
     }
 
-    public function getPersona(array $data){
+    public function getCargo(array $data){
         try{
-            return parent::execProcedure($data, "spu_persona_getdata", true);
+            return parent::execProcedure($data, "spu_cargo_getdata", true);
         }catch(Exception $error){
             die($error->getMessage());
         }
     }
 
-    public function modificarPersona(array $data){
+    public function modificarCargo(array $data){
         try{
-            return parent::execProcedure($data,"spu_persona_editar", true);
+            return parent::execProcedure($data,"spu_cargo_editar", true);
         }catch(Exception $error){
             die($error->getMessage());
         }
