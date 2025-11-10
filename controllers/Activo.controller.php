@@ -1,0 +1,180 @@
+<?php
+session_start();
+date_default_timezone_set("America/Lima");
+require_once '../models/Activo.php';
+require_once '../models/Serverside.php';
+
+if (isset($_GET['op'])){
+
+  $activo = new Activo();
+
+    if ($_GET['op'] == 'nombreproductoYaRegistrado'){
+        $datosObtenidos = $producto->nombreproductoYaRegistrado(["nombreproducto" => $_GET['nombreproducto']]);
+    
+        if(count($datosObtenidos) == 0){
+          echo 2;
+          return true;
+        }
+        else{
+          echo 1;
+          return false;
+        }
+    }
+
+    //if ($_GET['op'] == 'ListarProductoMedico'){
+      //$serverSide->get('vista_listar_productos_farmacia', 'idproducto', array('idproducto', 'nombreproducto', 'principiosactivos', 'formafarmaceutica', 'descripcion', 'fechavencimiento'));
+    //}
+
+      
+    //if ($_GET['op'] == 'ListarProductoFarmacia'){
+      //$serverSide->get('vista_listar_productos_farmacia', 'idproducto', array('idproducto','categoria', 'nombreproducto', 'principiosactivos', 'fechavencimiento'));
+    //}
+
+    if ($_GET['op'] == 'listarActivo') {   
+      $rows = $activo->listarActivo();
+      if (!empty($rows)) {
+        $i = 1;
+        foreach ($rows as $r) {
+
+          switch ($r->estado) {
+            case 'BUENO':
+              $badge = "<span class='badge bg-success'>BUENO</span>";
+              break;
+            case 'REGULAR':
+              $badge = "<span class='badge bg-warning text-dark'>REGULAR</span>";
+              break;
+            case 'MALO':
+              $badge = "<span class='badge bg-danger'>MALO</span>";
+              break;
+            default:
+              $badge = "<span class='badge bg-secondary'>DESCONOCIDO</span>";
+              break;
+          }
+
+          echo "
+            <tr>
+              <td class='text-center'>{$i}</td>
+              <td class='text-center'><img style='width:30px' src='img/$r->foto'/></td>
+              <td class='text-center'>{$r->cod_patrimonial}</td>
+              <td class='text-center'>{$r->nombre_categoria}</td>
+              <td class='text-center'>{$r->marca_modelo}</td>
+              <td class='text-center'>{$r->nombre_sede}</td>
+              <td class='text-center'>{$r->nombre_dependencia}</td>
+              <td class='text-center'>{$r->npersona}</td>
+              <td class='text-center'>{$badge}</td>
+
+              <td class='text-center'>
+                <div class='btn-group'>
+                  <button type='button' class='btn btn-sm btn-outline-primary dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                    <i class='fa fa-cog'></i> Acciones
+                  </button>
+                  <div class='dropdown-menu dropdown-menu-right'>
+                    <a class='dropdown-item ver' href='#' data-idactivo='{$r->id_activo}'>
+                      <i class='fa fa-eye text-info'></i>&nbsp; Ver detalles
+                    </a>
+                    <a class='dropdown-item modificar' href='#' data-idactivo='{$r->id_activo}'>
+                      <i class='fa fa-edit text-warning'></i>&nbsp; Editar
+                    </a>
+                    <a class='dropdown-item mover' href='#' data-idactivo='{$r->id_activo}'>
+                      <i class='fa fa-exchange-alt text-secondary'></i>&nbsp; Mover
+                    </a>
+                    <a class='dropdown-item qr' href='#' data-idactivo='{$r->id_activo}'>
+                      <i class='fa fa-qrcode text-success'></i>&nbsp; Ver QR
+                    </a>
+                    <div class='dropdown-divider'></div>
+                    <a class='dropdown-item text-danger eliminar' href='#' data-idactivo='{$r->id_activo}'>
+                      <i class='fa fa-trash'></i>&nbsp; Eliminar
+                    </a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          ";
+          $i++;
+        }
+      }
+      exit;
+    }
+
+
+    if($_GET['op']== 'eliminarProducto'){
+      $producto->eliminarProducto(["idproducto" => $_GET["idproducto"]]);
+    }
+    
+    if($_GET['op'] == 'modificarProducto'){
+      $producto->modificarProducto([
+        "idproducto" => $_GET['idproducto'],
+        "nombreproducto" => $_GET['nombreproducto']
+      ]);
+    }
+
+    if($_GET['op'] == 'getProducto'){
+      $data = $producto->getProducto(["idproducto" => $_GET['idproducto']]);
+      echo json_encode($data);
+    }
+
+    if($_GET['op'] == 'filtrarCategorias'){
+      $clave = $producto->filtrarCategoria(['idcategoria' => $_GET['idcategoria']]);
+      $i = 1;
+      foreach($clave as $valor){
+        $color="";
+        $color2="";
+
+        if($valor->stock<=5){
+          $color="red";$color2="white";
+        }else{
+          $color="green";$color2="white";
+        }
+        echo "
+          <tr>
+            <td class='text-center'>$i</td>
+            <td class='text-center'>$valor->categoria</td>
+            <td class='text-center'>$valor->nombreproducto</td>
+            <td class='text-center'><span style='background-color:$color;color:$color2'>$valor->stock</span></td>
+            <td class='text-center'><img style='Width:30px' src='img/$valor->fotografia'/></td>
+            <td class='text-center'>
+              <a  href='#' data-idproducto='{$valor->idproducto}' class='btn btn-sm btn-outline-secondary modificar'>
+                <i class='fas fa-edit'></i>
+              </a>
+              <a  href='#' data-idproducto='{$valor->idproducto}' class='btn btn-sm btn-outline-secondary eliminar'>
+                <i class='fas fa-trash-alt'></i>
+              </a>
+            </td>
+          </tr>
+        ";
+        $i++;
+      }
+    }
+
+    if($_GET['op'] == 'cargarProducto'){
+      $datosObtenidos = $producto->filtrarCategoria(['idcategoria' => $_GET['idcategoria']]);
+        echo "<option value=''>Seleccione</option>";
+        foreach($datosObtenidos as $valor){
+            echo"
+            <option value='$valor->idproducto'>$valor->nombreproducto</option>
+            ";
+        }
+    //   echo json_encode($data);
+    }
+
+}
+
+// if(isset($_POST['op'])){
+//   $producto = new Producto();
+
+//   if($_POST['op'] == 'registrarProducto'){
+//     $nombre = "";
+//     if ($_FILES['fotografia']['tmp_name'] != ''){
+//       $nombre = date('YmdhGs') . ".jpg";
+//       if (move_uploaded_file($_FILES['fotografia']['tmp_name'], "../img/" . $nombre)){
+//         $producto->registrarProducto([
+//           'idcategoria' => $_POST['idcategoria'],
+//           'nombreproducto' => $_POST['nombreproducto'],
+//           'fotografia' => $nombre,
+//           'stock' => $_POST['stock']
+//         ]);
+//       }
+//     }
+//   }
+// }
+?>

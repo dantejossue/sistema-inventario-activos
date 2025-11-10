@@ -20,7 +20,7 @@ class Cargo extends ModelMaster{
         }
     }
 
-    public function registrarCargo(array $data){
+    public function registrarCargo(array $data){ 
         try{
             parent::execProcedure($data, "	spu_cargo_registrar", false);
         }catch(Exception $error){

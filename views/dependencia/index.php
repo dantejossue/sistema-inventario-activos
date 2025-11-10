@@ -36,11 +36,11 @@ if ($_SESSION['nivelacceso'] != "ADMINISTRADOR") {
                                     </div> -->
                                     <div class="col-md-4">
                                         <label for="nombredependencia">Nombre de dependencia:</label>
-                                        <input id="nombredependencia" class="form-control" placeholder="...">
+                                        <input id="nombredependencia" class="form-control" >
                                     </div>
                                     <div class="col-md-6">
                                         <label for="descripcion" id="label_contrasena">Descripción:</label>
-                                        <textarea id="descripcion" class="form-control" rows="1" placeholder="..."></textarea>
+                                        <textarea id="descripcion" class="form-control" rows="1" ></textarea>
                                     </div>
                                     <div class="col-md-2 asignar" id="div_estado">
                                         <label for="">Estado:</label>

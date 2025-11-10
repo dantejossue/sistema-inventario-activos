@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-    idproducto = "";
+    idactivo = "";
     var txtProducto = document.querySelector("#idproductomod");
     var botonActualizar = document.querySelector("#actualizar");
     var botonGuardar = document.querySelector("#registrar");
@@ -104,17 +104,76 @@ $(document).ready(function(){
         });
     }
 
-    function listarProductosFarmaciaPrueba(){
+    function cargarAdministrativos(select){ 
+        var datos ={
+            'op': 'cargarAdministrativo'
+        };
         $.ajax({
-            url: 'controllers/Producto.controller.php',
+            url : 'controllers/Administrativo.controller.php',
             type: 'GET',
-            data: 'op=ListarProductoFarmaciaPrueba',
+            data: datos,
+            success:function(e){
+                $(select).html(e);
+            }
+        });
+    }
+
+    // Cargar los nombres de las dependencias
+    function cargarDependencias(select){ 
+        var datos ={
+            'op': 'cargarDependencias'
+        };
+        $.ajax({
+            url : 'controllers/Dependencia.controller.php',
+            type: 'GET',
+            data: datos,
+            success:function(e){
+                $(select).html(e);
+            }
+        });
+    }
+    
+    // Cargar los nombres de las dependencias
+    function cargarSede(select){ 
+        var datos ={
+            'op': 'cargarSede'
+        };
+        $.ajax({
+            url : 'controllers/Sede.controller.php',
+            type: 'GET',
+            data: datos,
+            success:function(e){
+                $(select).html(e);
+            }
+        });
+    }
+
+    function listarActivos(){
+        $.ajax({
+            url: 'controllers/Activo.controller.php',
+            type: 'GET',
+            data: 'op=listarActivo',
             success: function(e){
-                var tabla = $("#tablaProducto").DataTable();
+                var tabla = $("#tablaActivo").DataTable();
                 tabla.destroy();
-                $("#tablaProductolistar").html(e);
-                $("#tablaProducto").DataTable({
-                    language: { url: '//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json' },
+                $("#datosActivo").html(e);
+                $("#tablaActivo").DataTable({
+                    language: {
+                        "sProcessing":     "Procesando...",
+                        "sLengthMenu":     "Mostrar _MENU_ registros",
+                        "sZeroRecords":    "No se encontraron resultados",
+                        "sEmptyTable":     "No hay datos disponibles en la tabla",
+                        "sInfo":           "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                        "sInfoEmpty":      "Mostrando 0 a 0 de 0 registros",
+                        "sInfoFiltered":   "(filtrado de _MAX_ registros totales)",
+                        "sSearch":         "Buscar:",
+                        "oPaginate": {
+                            "sFirst":    "Primero",
+                            "sLast":     "Último",
+                            "sNext":     "Siguiente",
+                            "sPrevious": "Anterior"
+                        }
+                    },
                     columnDefs: [
                     {
                         visible: true,
@@ -488,15 +547,19 @@ $(document).ready(function(){
         });
     }
 
-    listarRestock();
-    listarSalidas();
-    listarProductosFarmaciaPrueba();
-    $("#registrar").click(nombreproductoYaExiste);
-    $("#actualizar").click(modificarProducto);
-    $("#btnRegistrarRestock").click(registrarRestock);
-    $("#btnRegistrarSalidas").click(registrarSalidas);
+    // listarRestock();
+    // listarSalidas();
+    listarActivos();
+    // $("#registrar").click(nombreproductoYaExiste);
+    // $("#actualizar").click(modificarProducto);
+    // $("#btnRegistrarRestock").click(registrarRestock);
+    // $("#btnRegistrarSalidas").click(registrarSalidas);
     cargarCategorias("#idcategoriasalida");
     cargarCategorias("#idcategoria");
     cargarCategorias("#idcategoriamodal");
     cargarCategorias("#categoriaselect");
+    cargarAdministrativos("#select_responsable");
+
+    cargarSede("#select_sede");
+    cargarDependencias("#select_dependencia");
 });

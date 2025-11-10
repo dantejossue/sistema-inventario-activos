@@ -1,7 +1,7 @@
 <?php
 require_once '../datatable.php';
 require_once '../acceso-seguro.php';
-if ($_SESSION['nivelacceso'] == 'Médico') {
+if ($_SESSION['nivelacceso'] != 'ADMINISTRADOR') {
     echo "<strong>No tiene el nivel de acceso requerido</strong>";
     exit();
 }
@@ -19,7 +19,7 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
             <div class="card-header">
                 <div class="row">
                     <div class="col-md-6">
-                        <p class="card-title mt-1" style="font-size: 22px" id="Aviso">Registro de Categorías</p>
+                        <p class="card-title mt-1" style="font-size: 22px" id="Aviso"><b>Registrar Categoría</b></p>
                     </div>
                     <div class="col-md-6">
                         <a data-toggle='modal' data-target="#modalrestock" href="#">
@@ -31,7 +31,7 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <form action="" id="formularioFarmacia" enctype="multipart/form-data">
+                <form action="" id="formularioCategoria" enctype="multipart/form-data">
                     <div class="form-group">
                         <div class="row">
                             <!-- <div class="col-md-12 mt-3">
@@ -40,27 +40,34 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
                                 </select>
                             </div> -->
                             <div class="col-md-12 mt-3">
-                                <label for="nombre_categoria">Categoría:</label>
-                                <input name="" id="nombre_categoria" class="form-control form-control-border" class="form-control" placeholder="Ingrese el nombre de la categoría"></input>
-                                <input type="text" id="idcatogiramod" class="form-control form-control-border asignar" disabled>
+                                <label for="nombrecategoria">Nombre Categoría:</label>
+                                <input name="" id="nombrecategoria" class="form-control form-control-border" class="form-control" placeholder="Ingrese el nombre de la categoría"></input>
+                                <input type="text" id="idcategoria" hidden>
                             </div>
                             <div class="col-md-12 mt-3">
                                 <label for="descripcion_categoria">Descripción:</label>
                                 <textarea name="" id="descripcion_categoria" class="form-control" rows="5"></textarea>
                                 <!-- <input type="number" min="1" id="stock" class="form-control form-control-border"> -->
                             </div>
-                            <div class="col-md-12 mt-3">
-                                <label for="fotografia">Fotografia:</label>
-                                <!-- <input type="file" id="fotografia" class="custom-file-input"> -->
+                            <!-- <div class="col-md-12 mt-3">
+                                <label for="imagen">Fotografia:</label>
                                 <div class="input-group">
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="fotografia">
-                                        <label class="custom-file-label" for="fotografia">Eliga Imagen</label>
+                                        <input type="file" class="custom-file-input" id="imagen" accept="image/*">
+                                        <label class="custom-file-label" for="imagen">Eliga Imagen</label>
                                     </div>
                                     <div class="input-group-append">
                                         <span class="input-group-text">Cargar</span>
                                     </div>
                                 </div>
+                            </div> -->
+                            <div class="col-12 mt-3 asignar" id="div_estado">
+                                <label for="">Estado:</label>
+                                <select name="" id="select_estado" class="form-control form-control-border">
+                                    <option value="" selected disabled>-- Seleccione estado --</option>
+                                    <option value="ACTIVO">ACTIVO</option>
+                                    <option value="INACTIVO">INACTIVO</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -96,11 +103,11 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
                             <th class="text-center">Fecha Registro</th>
                             <th class="text-center">Categoría</th>
                             <th class="text-center">Descripción</th>
-                            <th class="text-center">Fotografía</th>
+                            <th class="text-center">Estado</th>
                             <th class="text-center">Operaciones</th>
                         </tr>
                     </thead>
-                    <tbody class="table" id="tablaCategorialistar">
+                    <tbody class="table" id="datosCategoria">
                         <!-- Se carga de manera dinamica -->
                     </tbody>
                 </table>

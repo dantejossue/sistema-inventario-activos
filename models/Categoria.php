@@ -6,7 +6,7 @@ class Categoria extends ModelMaster{
 
     public function cargarCategoria(){
         try{
-          return parent::getRows("spu_categorias_cargar");
+          return parent::getRows("spu_categoria_cargar");
         }catch(Exception $error){
           die($error->getMessage());
         }
@@ -14,15 +14,15 @@ class Categoria extends ModelMaster{
     
     public function registrarCategoria(array $data){
         try{
-          parent::execProcedure($data, "spu_categorias_registro", false);
+          parent::execProcedure($data, "spu_categoria_registro", false);
         }catch(Exception $error){
           die($error->getMessage());
         }
       }
       
-    public function nombrecategoriasYaRegistrado(array $data){
+    public function categoriaExistente(array $data){
       try{
-          return parent::execProcedureLogin($data, "spu_nombrecategorias_registrado", true);
+          return parent::execProcedureLogin($data, "spu_categoria_existente", true);
       }
       catch (Exception $error){
           die($error->getMessage());
@@ -37,17 +37,17 @@ class Categoria extends ModelMaster{
       }
     }
     
-    public function modificarcategorias(array $data){
+    public function modificarCategoria(array $data){
       try{
-          parent::execProcedure($data, "spu_categoriass_modificar", false);
+          return parent::execProcedure($data, "spu_categoria_editar", true);
       }catch(Exception $error){
           die($error->getMessage());
       }
     } 
     
-    public function getcategorias(array $data){
+    public function getCategoria(array $data){
         try{
-            return parent::execProcedure($data, "spu_categoriass_getdata", true);
+            return parent::execProcedure($data, "spu_categoria_getdata", true);
         }catch(Exception $error){
             die($error->getMessage());
         }

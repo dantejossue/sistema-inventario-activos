@@ -4,6 +4,14 @@ require_once '../core/model.master.php';
 
 class Administrativo extends ModelMaster{
 
+    public function cargarAdministrativo(){
+        try{
+          return parent::getRows("spu_administrativo_cargar");
+        }catch(Exception $error){
+          die($error->getMessage());
+        }
+    }
+
     public function cargarDependencia(){
         try{
           return parent::getRows("spu_dependencia_cargar");

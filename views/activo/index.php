@@ -29,18 +29,23 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
             </div>
             <div class="card-body table-responsive">
 
-                <table class="table text-center" id="tablaProducto">
+                <table class="table text-center" id="tablaActivo">
                     <thead>
                         <tr>
                             <th class="text-center">N°</th>
+                            <th class="text-center">Foto</th>
+                            <th class="text-center">Código Patrimonial</th>
                             <th class="text-center">Categoría</th>
-                            <th class="text-center">Producto</th>
-                            <th class="text-center">Propietario</th>
-                            <th class="text-center">Fotografia</th>
-                            <th class="text-center">Operaciones</th>
+                            <th class="text-center">Marca / Modelo</th>
+                            <th class="text-center">Sede</th>
+                            <th class="text-center">Dependencia</th>
+                            <th class="text-center">Responsable</th>
+                            <th class="text-center">Estado</th>
+                            <th class="text-center">Acción</th>
+
                         </tr>
                     </thead>
-                    <tbody class="table" id="tablaProductolistar">
+                    <tbody class="table" id="datosActivo">
                         <!-- Se carga de manera dinamica -->
                     </tbody>
                 </table>
@@ -70,21 +75,21 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
                                         <div class="row">
                                             <div class="col-md-12 mb-3">
                                                 <label for="idcategoriamodal">Categoría</label>
-                                                <select class="form-control form-control-border" name="idcategoria" id="idcategoriamodal">
+                                                <select class="form-control" name="idcategoria" id="idcategoriamodal">
                                                 </select>
                                             </div>
                                             <div class="col-md-12 mb-3">
                                                 <label for="idproductomodal">Producto</label>
-                                                <select class="form-control form-control-border" name="idproductomodal" id="idproductomodal">
+                                                <select class="form-control" name="idproductomodal" id="idproductomodal">
                                                 </select>
                                             </div>
                                             <div class="col-md-12 mb-3">
                                                 <label for="cantidad">Cantidad</label>
-                                                <input type="number" min="1" class="form-control form-control-border" id="cantidad">
+                                                <input type="number" min="1" class="form-control" id="cantidad">
                                             </div>
                                             <div class="col-md-12">
                                                 <label for="detallereestock">Detalle</label>
-                                                <textarea class="form-control form-control-border" id="detallereestock"></textarea>
+                                                <textarea class="form-control" id="detallereestock"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -122,44 +127,59 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
                 <div class="row">
                     <div class="col-4 mb-3">
                         <label for="idcategoria">Categoría:</label>
-                        <select class="form-control form-control-border" name="idcategoria" id="idcategoria">
+                        <select class="form-control" name="idcategoria" id="idcategoria">
                         </select>
                     </div>
                     <div class="col-4 mb-3">
                         <label for="txt_marca">Marca:</label>
-                        <input type="text" class="form-control form-control-border" id="txt_marca" onkeypress="return sololetras(event)">
+                        <input type="text" class="form-control" id="txt_marca" onkeypress="return sololetras(event)">
                     </div>
                     <div class="col-4 mb-3">
                         <label for="txt_modelo">Modelo:</label>
-                        <input type="text" class="form-control form-control-border" id="txt_modelo" onkeypress="return sololetras(event)">
+                        <input type="text" class="form-control" id="txt_modelo" onkeypress="return sololetras(event)">
                     </div>
                     <div class="col-3 mb-3">
                         <label for="txt_serie">Nro. Serie:</label>
-                        <input type="text" class="form-control form-control-border" id="txt_serie" onkeypress="return sololetras(event)">
+                        <input type="text" class="form-control" id="txt_serie" onkeypress="return sololetras(event)">
                     </div>
                     <div class="col-4 mb-3">
                         <label for="txt_patrimonial">Codigo Patrimonial:</label>
-                        <input type="text" class="form-control form-control-border" id="txt_patrimonial">
+                        <input type="text" class="form-control" id="txt_patrimonial">
                     </div>
                     <div class="col-5 mb-3">
-                        <label for="txt_responsable">Responsable:</label>
-                        <input type="text" class="form-control form-control-border" id="txt_responsable" onkeypress="return soloNumeros(event)">
+                        <label for="select_responsable">Responsable Administrativo:</label>
+                        <select id="select_responsable" name="select_responsable" class="form-control">
+                        </select>
                     </div>
                     <div class="col-6 mb-3">
-                        <label for="txt_sede">Sede:</label>
-                        <input type="text" class="form-control form-control-border" id="txt_sede">
+                        <label for="select_sede">Sede:</label>
+                        <select id="select_sede" name="select_sede" class="form-control">
+                        </select>
                     </div>
                     <div class="col-6 mb-3">
-                        <label for="txt_dependencia">Dependencia</label>
-                        <input type="text" class="form-control form-control-border" id="txt_dependencia">
+                        <label for="select_dependencia">Dependencia:</label>
+                        <select id="select_dependencia" name="select_dependencia" class="form-control">
+                        </select>
                     </div>
-                    <div class="col-6 mb-3">
+                    <!-- <div class="col-6 mb-3">
                         <label for="fotografia">Fotografia:</label>
-                        <input type="file" id="fotografia" class="form-control form-control-border">
+                        <input type="file" id="fotografia" class="form-control">
+                    </div> -->
+                    <div class="col-6 mb-3">
+                        <label for="foto">Fotografia:</label>
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="foto" accept="image/*">
+                                <label class="custom-file-label" for="foto">Eliga Imagen</label>
+                            </div>
+                            <div class="input-group-append">
+                                <span class="input-group-text">Cargar</span>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-6 mb-3">
                         <label for="txt_estado">Estado</label>
-                        <select class="form-control form-control-border" name="idcategoria" id="txt_estado">
+                        <select class="form-control" name="idcategoria" id="txt_estado">
                             <option value="Bueno" disabled selected>--Seleccione estado--</option>
                             <option value="Bueno">Bueno</option>
                             <option value="Bueno">Regular</option>
@@ -181,13 +201,13 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
     </div>
 </div>
 
-<script src="js/productos.js"></script>
+<script src="js/activos.js"></script>
 
 <script>
-      $('#modal_registrar').on('shown.bs.modal', function() {
+    $('#modal_registrar').on('shown.bs.modal', function() {
         $('#txt_nro').trigger('focus')
-      });
-      $('#modal_editar').on('shown.bs.modal', function() {
+    });
+    $('#modal_editar').on('shown.bs.modal', function() {
         $('#txt_idpersona').trigger('focus')
-      });
+    });
 </script>

@@ -130,11 +130,17 @@
                 with font-awesome or any other icon font library -->
             
             <?php
-              if($_SESSION['nivelacceso'] == 'ADMINISTRADOR'){
+              if($_SESSION['nivelacceso'] == 'ADMINISTRADOR' || $_SESSION['nivelacceso'] == 'OPERADOR'){
                 echo "
-                  <li class='nav-header' style='background-color:#292929'>Productos</li>
+                  <li class='nav-item mt-3'>
+                    <a href='index.php' class='nav-link'>
+                    <i class='fas fa-home nav-icon'></i>
+                      <p>Home</p>
+                    </a>
+                  </li>
+                  <li class='nav-header' style='background-color:#292929'>Activos</li>
                   <li class='nav-item'>
-                    <a href='main.php?view=producto' class='nav-link'>
+                    <a href='main.php?view=activo' class='nav-link'>
                     <i class='fas fa-box nav-icon'></i>
                       <p>Activos</p>
                     </a>
@@ -315,7 +321,7 @@
   <!-- Bootstrap autocomplete -->
   <script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.7/dist/latest/bootstrap-autocomplete.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script> -->
   <script src="https://cdn.jsdelivr.net/npm/smartwizard@6/dist/js/jquery.smartWizard.min.js" type="text/javascript"></script>
   <!-- <script src="https://cdn.tiny.cloud/1/4wqx4j9cpb6doqzr81ox1xrsx2e9fgddsqtvmdx1mwij8gr8/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script> -->
   <script src="js/alertas.js"></script>
@@ -325,7 +331,7 @@
       let content = getParam("view");
       // console.log(test);
       if(content == false){
-        $("#contenido").load('views/producto/index.php');
+        $("#contenido").load('views/index.php');
       }else{
         let ruta = 'views/' + content + '/' + 'index.php'
         $("#contenido").load(ruta);

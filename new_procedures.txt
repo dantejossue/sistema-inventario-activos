@@ -1,0 +1,44 @@
+TABLAS:
+create table categoria (
+	id_categoria int PRIMARY KEY AUTO_INCREMENT,
+    nombre_categoría varchar(250),
+    descripcion varchar(255),
+    imagen varchar(255),
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    estado ENUM('ACTIVO', 'INACTIVO') DEFAULT 'ACTIVO'
+);
+
+create table estado_activo (
+	id_estado int PRIMARY KEY AUTO_INCREMENT,
+    nombre_estado varchar(50),
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+create table activo (
+	id_activo INT PRIMARY KEY AUTO_INCREMENT,
+    id_categoria int,
+    marca varchar(150),
+    modelo varchar(150),
+    serie varchar(150),
+    cod_patrimonial varchar(150),
+    id_sede int,
+    id_dependencia int,
+    id_administrativo int,
+	fotografia varchar(200),
+    id_estado int,
+    observacion varchar(200),
+    fecha_adquisicion date,
+    qr_code varchar(255),
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    valor_precio varchar(20),
+    CONSTRAINT fk_activo_categoria FOREIGN KEY (id_categoria) REFERENCES categoria(id_categoria),
+    CONSTRAINT fk_activo_sede FOREIGN KEY (id_sede) REFERENCES sede(id_sede),
+    CONSTRAINT fk_activo_dependencia FOREIGN KEY (id_dependencia) REFERENCES dependencia(id_dependencia),
+    CONSTRAINT fk_activo_administrativo FOREIGN KEY (id_administrativo) REFERENCES administrativo(id_administrativo),
+    CONSTRAINT fk_activo_estado FOREIGN KEY (id_estado) REFERENCES estado_activo(id_estado)
+    
+);
+
+
+PROCEDIMIENTOS:
+

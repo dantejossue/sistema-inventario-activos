@@ -6,6 +6,17 @@ require_once '../models/Serverside.php';
 
 if (isset($_GET['op'])){
   $administrativo = new Administrativo();
+
+  if($_GET['op'] == 'cargarAdministrativo'){ 
+    $datosObtenidos = $administrativo->cargarAdministrativo();
+      echo "<option value='' selected disabled>--Seleccione Administrativo--</option>";
+      foreach($datosObtenidos as $valor){
+          echo"
+          <option value='$valor->id_administrativo'>$valor->npersona</option>
+          ";
+      }
+    //   echo json_encode($data);
+  }
   
 //   if($_GET['op'] == 'cargarPersona'){ 
 //       $datosObtenidos = $persona->cargarPersona();
@@ -92,6 +103,8 @@ if (isset($_GET['op'])){
 
     echo json_encode($data);
   }
+
+
 
 // if(isset($_POST['op'])){
 //   $categoria = new Categoria();

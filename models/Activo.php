@@ -2,7 +2,7 @@
 
 require_once '../core/model.master.php';
 
-class Producto extends ModelMaster{
+class Activo extends ModelMaster{
 
   public function registrarProducto(array $data){
       try{
@@ -53,9 +53,9 @@ class Producto extends ModelMaster{
     }
   }
 
-  public function listarProducto(){
+  public function listarActivo(){
     try{
-        return parent::getRows("spu_productos_listar");
+        return parent::getRows("spu_activo_listar");
     }catch(Exception $error){
         die($error->getMessage());
     }
