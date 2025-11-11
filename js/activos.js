@@ -1,6 +1,7 @@
 $(document).ready(function(){
 
     idactivo = "";
+    var div_sede_dependencia = document.querySelector("#div_sede_dependencia");
     var txtProducto = document.querySelector("#idproductomod");
     var botonActualizar = document.querySelector("#actualizar");
     var botonGuardar = document.querySelector("#registrar");
@@ -148,6 +149,42 @@ $(document).ready(function(){
         });
     }
 
+    // Cargar id_dependencia_sede
+    function cargarSedePorAdministrativo(idAdministrativo){ 
+        $.ajax({
+            url : 'controllers/Administrativo.controller.php',
+            type: 'GET',
+            data: {
+                'op': 'listarSedePorAdministrativo',
+                'idAdministrativo': idAdministrativo
+            },
+            success:function(e){
+                $('#select_sede').html(e);
+                // if(idDependenciaSeleccionada){
+                //     $('#select_dependencia').val(idDependenciaSeleccionada);
+                // }
+            }
+        });
+    }
+
+    // Cargar id_dependencia_sede
+    function cargarDependenciaPorAdministrativo(idAdministrativo){ 
+        $.ajax({
+            url : 'controllers/Administrativo.controller.php',
+            type: 'GET',
+            data: {
+                'op': 'listarDependenciaPorAdministrativo',
+                'idAdministrativo': idAdministrativo
+            },
+            success:function(e){
+                $('#select_dependencia').html(e);
+                // if(idDependenciaSeleccionada){
+                //     $('#select_dependencia').val(idDependenciaSeleccionada);
+                // }
+            }
+        });
+    }
+
     function listarActivos(){
         $.ajax({
             url: 'controllers/Activo.controller.php',
@@ -278,7 +315,7 @@ $(document).ready(function(){
     });
     
     $("#cancelar").click(function(){
-        $("#formularioFarmacia")[0].reset();
+        $("#formularioActivo")[0].reset();
         $("#Aviso").html("Registrar Producto");
         txtProducto.classList.add('asignar');
         botonActualizar.classList.add('asignar');
@@ -398,6 +435,17 @@ $(document).ready(function(){
                     $("#idproductosalida").html(result);
                 }
             });
+        }
+    });
+
+    // Select de sede y dependencia
+    $('#select_responsable').on('change', function(){
+        let idAdministrativo = $(this).val();
+        if(idAdministrativo){
+            div_sede_dependencia.classList.remove('asignar');
+            cargarSedePorAdministrativo(idAdministrativo)
+            cargarDependenciaPorAdministrativo(idAdministrativo)
+            // cargarDependenciasPorSede(idSede);
         }
     });
 
@@ -560,6 +608,6 @@ $(document).ready(function(){
     cargarCategorias("#categoriaselect");
     cargarAdministrativos("#select_responsable");
 
-    cargarSede("#select_sede");
-    cargarDependencias("#select_dependencia");
+    // cargarSede("#select_sede");
+    // cargarDependencias("#select_dependencia");
 });

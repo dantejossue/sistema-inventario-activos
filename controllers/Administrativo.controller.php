@@ -17,6 +17,30 @@ if (isset($_GET['op'])){
       }
     //   echo json_encode($data);
   }
+
+  if($_GET['op'] == 'listarSedePorAdministrativo'){ 
+    $datosObtenidos = $administrativo->listarSedePorAdministrativo([
+      '_idadministrativo' => $_GET['idAdministrativo']
+    ]);
+      foreach($datosObtenidos as $valor){
+          echo"
+          <option value='$valor->id_sede'>$valor->nombre_sede</option>
+          ";
+      }
+    //   echo json_encode($data);
+  }
+
+  if($_GET['op'] == 'listarDependenciaPorAdministrativo'){ 
+    $datosObtenidos = $administrativo->listarDependenciaPorAdministrativo([
+      '_idadministrativo' => $_GET['idAdministrativo']
+    ]);
+      foreach($datosObtenidos as $valor){
+          echo"
+          <option value='$valor->id_dependencia'>$valor->nombre_dependencia</option>
+          ";
+      }
+    //   echo json_encode($data);
+  }
   
 //   if($_GET['op'] == 'cargarPersona'){ 
 //       $datosObtenidos = $persona->cargarPersona();

@@ -28,6 +28,22 @@ class Administrativo extends ModelMaster{
         }
     }
 
+    public function listarSedePorAdministrativo(array $data){
+        try{
+            return parent::execProcedure($data,"spu_sede_listar_por_administrativo", true);
+        }catch(Exception $error){
+            die($error->getMessage());
+        }
+    }
+
+    public function listarDependenciaPorAdministrativo(array $data){
+        try{
+            return parent::execProcedure($data,"spu_dependencia_listar_por_administrativo", true);
+        }catch(Exception $error){
+            die($error->getMessage());
+        }
+    }
+
     public function registrarAdministrativo(array $data){
         try{
             parent::execProcedure($data, "spu_administrativo_registrar", false);
