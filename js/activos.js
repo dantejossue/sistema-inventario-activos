@@ -7,82 +7,101 @@ $(document).ready(function(){
     var botonGuardar = document.querySelector("#registrar");
 
 
-    function registrarProducto(){
-        var idcategoria = $("#idcategoria").val();
-        var txt_marca = $("#txt_marca").val();
-        var txt_modelo = $("#txt_modelo").val();
-        var txt_serie = $("#txt_serie").val();
-        var txt_patrimonial = $("#txt_patrimonial").val();
-        var txt_propietario = $("#txt_propietario").val();
-        var txt_sede = $("#txt_sede").val();
-        var txt_dependencia = $("#txt_dependencia").val();
+    function registrarActivo() {
+    var idcategoria = $("#idcategoria").val();
+    var txt_marca = $("#txt_marca").val();
+    var txt_modelo = $("#txt_modelo").val();
+    var txt_serie = $("#txt_serie").val();
+    var txt_patrimonial = $("#txt_patrimonial").val();
+    var select_responsable = $("#select_responsable").val();
+    var select_sede = $("#select_sede").val();
+    var select_dependencia = $("#select_dependencia").val();
+    var foto = $("#foto")[0].files[0];
+    var select_estado = $("#select_estado").val();
+    var observacion = $("#observacion").val();
 
-        // var nombreproducto = $("#nombreproducto").val();
-        var fotografia = $("#fotografia")[0].files[0];
-        var txt_estado = $("#txt_estado").val();
-        var observacion = $("#observacion").val();
-        
-        if(idcategoria == "" || txt_marca == "" || txt_modelo == "" || txt_serie == "" || txt_patrimonial == "" || txt_propietario == "" || txt_sede == "" || txt_dependencia == "" || fotografia == undefined || txt_estado == "" || observacion == ""){
-            mostrarAlerta("warning", "¡Completar los campos necesarios!");
-        }else{
-            Swal.fire({
-                icon:'question',
-                title:'¿Está seguro de registrar?',
-                showCancelButton: true,
-                cancelButtonText:'Cancelar',
-                confirmButtonText:'Aceptar'
-            }).then((result) => {
-                
-                if(result.isConfirmed){
-                    var formData = new FormData();
+    if (
+        idcategoria == "" ||
+        txt_marca == "" ||
+        txt_modelo == "" ||
+        txt_serie == "" ||
+        txt_patrimonial == "" ||
+        !select_responsable ||
+        !select_sede ||
+        !select_dependencia ||
+        !foto ||
+        !select_estado ||
+        observacion == ""
+    ) {
+        mostrarAlerta("warning", "¡Completar los campos necesarios!");
+    } else {
+        Swal.fire({
+            icon: "question",
+            title: "¿Está seguro de registrar?",
+            showCancelButton: true,
+            cancelButtonText: "Cancelar",
+            confirmButtonText: "Aceptar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // ✅ Crear FormData para enviar archivo
+                var formData = new FormData();
+                formData.append("op", "registrarActivo");
+                formData.append("idcategoria", idcategoria);
+                formData.append("txt_marca", txt_marca);
+                formData.append("txt_modelo", txt_modelo);
+                formData.append("txt_serie", txt_serie);
+                formData.append("txt_patrimonial", txt_patrimonial);
+                formData.append("select_responsable", select_responsable);
+                formData.append("select_sede", select_sede);
+                formData.append("select_dependencia", select_dependencia);
+                formData.append("foto", foto);
+                formData.append("select_estado", select_estado);
+                formData.append("observacion", observacion);
 
-                    formData.append('op', 'registrarProducto');
-                    formData.append('idcategoria', idcategoria);
-                    formData.append('nombreproducto', nombreproducto);
-                    formData.append('fotografia', fotografia);
-                    formData.append('stock', stock);
-
-                    $.ajax({
-                        url : 'controllers/Producto.controller.php',
-                        type: 'POST',
-                        data: formData,   
-                        contentType: false,
-                        processData: false,
-                        cache: false,                     
-                        success: function(result){
-                            mostrarAlerta("success", "¡Registrado con éxito!");
-                            $("#formularioFarmacia")[0].reset();
-                            listarProductosFarmaciaPrueba();
-                        }
-                    });
-                }
-            });
-        }
+                $.ajax({
+                    url: "controllers/Activo.controller.php",
+                    type: "POST",              // ✅ DEBE SER POST
+                    data: formData,            // ✅ Usar FormData
+                    contentType: false,        // ✅ Obligatorio
+                    processData: false,        // ✅ Obligatorio
+                    success: function (e) {
+                        mostrarAlerta("success", "¡Registrado con éxito!");
+                        $("#formularioActivo")[0].reset();
+                        listarActivos();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error AJAX:", error);
+                    }
+                });
+            }
+        });
     }
+}
 
-    function nombreproductoYaExiste(){
+
+    function activoYaExiste(){
         // let nombreproductoYaExiste = $("#nombreproducto").val();
         // var nombreproductoYaExiste = $("#nombreproducto").val();
 
-        let activo_existente = $("#txt_serie").val(); 
+        let txt_patrimonial = $("#txt_patrimonial").val(); 
 
-        if(nombreproductoYaExiste == ""){
+        if(txt_patrimonial == ""){
             mostrarAlerta("warning", "¡Completar los campos necesarios!");
         }else{
             var datos = {
-                'op' : 'nombreproductoYaRegistrado',
-                'nombreproducto' : nombreproductoYaExiste
+                'op' : 'activoYaRegistrado',
+                'txt_patrimonial' : txt_patrimonial
             };
             $.ajax({
                 type: "GET",
-                url:  "controllers/Producto.controller.php",
+                url:  "controllers/Activo.controller.php",
                 data: datos,
-                success: function(e){
-                    if(e == 1){
-                        mostrarAlerta("error", "¡Ya existe este producto!");
+                success: function(resp){
+                    if(resp == 1){
+                        mostrarAlerta("error", '¡Ya existe este activo con código patrimonial: '+txt_patrimonial+'!');
                     }
-                    else if(e == 2){
-                        registrarProducto();
+                    else if(resp == 2){
+                        registrarActivo();
                     }else{
                         mostrarAlerta("error", "¡A ocurrido un error!");
                     }
@@ -316,13 +335,17 @@ $(document).ready(function(){
     
     $("#cancelar").click(function(){
         $("#formularioActivo")[0].reset();
-        $("#Aviso").html("Registrar Producto");
-        txtProducto.classList.add('asignar');
+        div_sede_dependencia.classList.add('asignar');
         botonActualizar.classList.add('asignar');
         botonGuardar.classList.remove('asignar');
-        $("#idcategoria").prop('disabled', false);
-        $("#stock").prop('disabled', false);
-        $("#fotografia").prop('disabled', false);
+        // $("#idcategoria").prop('disabled', false);
+        // $("#stock").prop('disabled', false);
+        // $("#fotografia").prop('disabled', false);
+    });
+
+    $("#borrar_datos_modal").click(function(){
+        $("#formularioActivo")[0].reset();
+        div_sede_dependencia.classList.add('asignar');
     });
 
     function modificarProducto(){
@@ -598,7 +621,7 @@ $(document).ready(function(){
     // listarRestock();
     // listarSalidas();
     listarActivos();
-    // $("#registrar").click(nombreproductoYaExiste);
+    $("#registrar").click(activoYaExiste);
     // $("#actualizar").click(modificarProducto);
     // $("#btnRegistrarRestock").click(registrarRestock);
     // $("#btnRegistrarSalidas").click(registrarSalidas);

@@ -8,9 +8,8 @@ if (isset($_GET['op'])){
 
   $activo = new Activo();
 
-    if ($_GET['op'] == 'nombreproductoYaRegistrado'){
-        $datosObtenidos = $producto->nombreproductoYaRegistrado(["nombreproducto" => $_GET['nombreproducto']]);
-    
+    if ($_GET['op'] == 'activoYaRegistrado'){
+        $datosObtenidos = $activo->activoYaRegistrado(["_codpatrimonial" => $_GET['txt_patrimonial']]);
         if(count($datosObtenidos) == 0){
           echo 2;
           return true;
@@ -100,7 +99,7 @@ if (isset($_GET['op'])){
     if($_GET['op']== 'eliminarProducto'){
       $producto->eliminarProducto(["idproducto" => $_GET["idproducto"]]);
     }
-    
+
     if($_GET['op'] == 'modificarProducto'){
       $producto->modificarProducto([
         "idproducto" => $_GET['idproducto'],
@@ -159,22 +158,30 @@ if (isset($_GET['op'])){
 
 }
 
-// if(isset($_POST['op'])){
-//   $producto = new Producto();
+if(isset($_POST['op'])){
+  $activo = new Activo();
 
-//   if($_POST['op'] == 'registrarProducto'){
-//     $nombre = "";
-//     if ($_FILES['fotografia']['tmp_name'] != ''){
-//       $nombre = date('YmdhGs') . ".jpg";
-//       if (move_uploaded_file($_FILES['fotografia']['tmp_name'], "../img/" . $nombre)){
-//         $producto->registrarProducto([
-//           'idcategoria' => $_POST['idcategoria'],
-//           'nombreproducto' => $_POST['nombreproducto'],
-//           'fotografia' => $nombre,
-//           'stock' => $_POST['stock']
-//         ]);
-//       }
-//     }
-//   }
-// }
+     if ($_POST['op'] == 'registrarActivo') {
+
+      $nombre = "";
+      if (!empty($_FILES['foto']['tmp_name'])) {
+        $nombre = date('YmdhGs') . ".jpg";
+        if (move_uploaded_file($_FILES['foto']['tmp_name'], "../img/" . $nombre)) {
+          $activo->registrarActivo([
+            "_idcategoria"       => $_POST["idcategoria"],
+            "_txt_marca"         => $_POST["txt_marca"],
+            "_txt_modelo"        => $_POST["txt_modelo"],
+            "_txt_serie"         => $_POST["txt_serie"],
+            "_txt_patrimonial"   => $_POST["txt_patrimonial"],
+            "_select_responsable"=> $_POST["select_responsable"],
+            "_select_sede"       => $_POST["select_sede"],
+            "_select_dependencia"=> $_POST["select_dependencia"],
+            "_foto"              => $nombre,
+            "_select_estado"     => $_POST["select_estado"],
+            "_observacion"       => $_POST["observacion"]
+          ]);
+        }
+      }
+    }
+}
 ?>

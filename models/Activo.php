@@ -4,17 +4,17 @@ require_once '../core/model.master.php';
 
 class Activo extends ModelMaster{
 
-  public function registrarProducto(array $data){
+  public function registrarActivo(array $data){
       try{
-        parent::execProcedure($data, "spu_productos_registro", false);
+        parent::execProcedure($data, "spu_activo_registro", false);
       }catch(Exception $error){
         die($error->getMessage());
       }
     }
     
-  public function nombreproductoYaRegistrado(array $data){
+  public function activoYaRegistrado(array $data){
     try{
-        return parent::execProcedureLogin($data, "spu_nombreproducto_registrado", true);
+        return parent::execProcedureLogin($data, "spu_activo_existente_cod_patrimonial", true);
     }
     catch (Exception $error){
         die($error->getMessage());

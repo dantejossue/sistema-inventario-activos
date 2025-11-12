@@ -119,12 +119,17 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-primary" id="staticBackdropLabel" style="font-weight: bold;">Registro de Activo</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <div class="m-0 p-0">
+                    <a type="button" class="text-danger" id="borrar_datos_modal">
+                        <i class="fa fa-eraser"></i>
+                    </a>
+                    <button type="button" class="close ml-0" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
             </div>
             <div class="modal-body p-4">
-                <div class="m-0 p-0" id="formularioActivo">
+                <form class="m-0 p-0" id="formularioActivo">
                     <div class="row">
                         <div class="col-4 mb-3">
                             <label for="idcategoria">Categoría:</label>
@@ -181,12 +186,12 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
                             </div>
                         </div>
                         <div class="col-6 mb-3">
-                            <label for="txt_estado">Estado</label>
-                            <select class="form-control" name="idcategoria" id="txt_estado">
-                                <option value="Bueno" disabled selected>--Seleccione estado--</option>
-                                <option value="Bueno">Bueno</option>
-                                <option value="Bueno">Regular</option>
-                                <option value="Bueno">Malo</option>
+                            <label for="select_estado">Estado</label>
+                            <select class="form-control" name="select_estado" id="select_estado">
+                                <option value="" disabled selected>--Seleccione estado--</option>
+                                <option value="BUENO">Bueno</option>
+                                <option value="REGULAR">Regular</option>
+                                <option value="MALO">Malo</option>
                             </select>
                         </div>
                         <div class="col-12 mt-3">
@@ -194,7 +199,7 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
                             <textarea type="text" id="txt_observacion" class="form-control" rows="5"></textarea>
                         </div>
                     </div>
-                </div>
+                </form>
 
             </div>
             <div class="modal-footer pl-4 pr-4">
