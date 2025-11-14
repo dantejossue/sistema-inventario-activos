@@ -219,4 +219,5 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
     $('#modal_editar').on('shown.bs.modal', function() {
         $('#txt_idpersona').trigger('focus')
     });
+    
 </script>

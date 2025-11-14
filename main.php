@@ -226,11 +226,7 @@
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper text-sm" id="content-body">
       <!-- Content Header (Page header) -->
-      <div class="content-header">
-        <div class="container-fluid">
-
-        </div><!-- /.container-fluid -->
-      </div>
+      
       <!-- /.content-header -->
 
       <!-- Main content -->
@@ -329,12 +325,19 @@
     $(document).ready(function(){
 
       let content = getParam("view");
-      // console.log(test);
-      if(content == false){
-        $("#contenido").load('views/index.php');
-      }else{
-        let ruta = 'views/' + content + '/' + 'index.php'
-        $("#contenido").load(ruta);
+
+      if (!content) {
+          $("#contenido").load("view/index.php");
+      } else {
+
+          // Si se pide un archivo .php → lo carga directamente
+          if (content.includes(".php")) {
+              $("#contenido").load("view/" + content);
+          }
+          // Si NO → carga el módulo/index.php
+          else {
+              $("#contenido").load("view/" + content + "/index.php");
+          }
       }
     });
 

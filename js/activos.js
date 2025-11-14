@@ -324,7 +324,16 @@ $(document).ready(function(){
             }
         });
     });
-    
+
+    $("#tablaActivo").on("click", ".ver", function(){
+        let idactivo = $(this).attr('data-idactivo');
+        window.location.href = "main.php?view=activo/view_detalle.php&id=" + idactivo;
+    }); 
+
+    function volverActivos(){
+        window.location.href = "main.php?view=activo";
+    }
+
     $("#cancelarRestock").click(function(){
         $("#formularioRestock")[0].reset();
     });
@@ -622,6 +631,7 @@ $(document).ready(function(){
     // listarSalidas();
     listarActivos();
     $("#registrar").click(activoYaExiste);
+    $('#volver_').click(volverActivos);
     // $("#actualizar").click(modificarProducto);
     // $("#btnRegistrarRestock").click(registrarRestock);
     // $("#btnRegistrarSalidas").click(registrarSalidas);
