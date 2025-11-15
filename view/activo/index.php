@@ -220,4 +220,11 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
         $('#txt_idpersona').trigger('focus')
     });
     
+
+    $("#tablaActivo").on("click", ".ver", function () {
+        let idactivo = $(this).data("idactivo");
+
+        // Redirigir a la página detalle
+        window.location.href = "main.php?view=activo/view_detalle.php&id=" + idactivo;
+    });
 </script>

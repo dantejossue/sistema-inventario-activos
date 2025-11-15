@@ -282,7 +282,7 @@ $(document).ready(function(){
             });
     });
 
-    $("#tablaProducto").on('click', ".modificar", function(){
+    $("#tablaActivo").on('click', ".modificar", function(){
         let idproducto = $(this).attr('data-idproducto');
 
         var datos = {
@@ -325,10 +325,40 @@ $(document).ready(function(){
         });
     });
 
-    $("#tablaActivo").on("click", ".ver", function(){
-        let idactivo = $(this).attr('data-idactivo');
-        window.location.href = "main.php?view=activo/view_detalle.php&id=" + idactivo;
-    }); 
+    // $("#tablaActivo").on("click", ".ver", function(){
+    //     let idactivo = $(this).attr('data-idactivo');
+
+    //     var datos = {
+    //         'op' : 'cargarActivo',
+    //         'idactivo' : idactivo
+    //     };
+
+    //     console.log(datos);
+    //     $.ajax({
+    //         url: 'controllers/Activo.controller.php',
+    //         type: 'GET',
+    //         data: datos,
+    //         success: function(result){                        
+    //             if ($.trim(result) != ""){
+    //                 window.location.href = "main.php?view=activo/view_detalle.php&id=" + idactivo;
+                    
+    //                 var resultado = JSON.parse(result);
+    //                 // console.log(resultado);
+                    
+    //                 $("#idcategoria").val(resultado[0].idcategoria);
+    //                 $('$foto_activo').attr('src',resultado[0].foto);
+    //                 $("#nombre_activo").html(resultado[0].nombre_categoria);
+    //                 // tinymce.get("nombreproducto").setContent(resultado[0].nombreproducto);
+    //                 txtProducto.setAttribute("data-idproducto", resultado[0].idproducto);
+    //                 // $("#fechavencimiento").val(resultado[0].fechavencimiento);
+    //                 $("#idproductomod").hide();
+
+    //             }else{
+    //                 mostrarAlerta("warning", "¡No encontramos registros!");
+    //             }
+    //         }
+    //     });
+    // }); 
 
     function volverActivos(){
         window.location.href = "main.php?view=activo";

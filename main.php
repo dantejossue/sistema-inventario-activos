@@ -230,7 +230,7 @@
       <!-- /.content-header -->
 
       <!-- Main content -->
-      <section class="content">
+      <section class="content pt-3">
         <div class="container-fluid" id="contenido">
           <!-- Aqui se cargan los datos dinamicos -->        
         </div><!--/. container-fluid -->

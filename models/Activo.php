@@ -37,6 +37,14 @@ class Activo extends ModelMaster{
     }
   } 
 
+  public function cargarActivo(array $data){
+      try{
+          return parent::execProcedure($data, "spu_activo_cargardata", true);
+      }catch(Exception $error){
+          die($error->getMessage());
+      }
+  }
+
   public function getProducto(array $data){
       try{
           return parent::execProcedure($data, "spu_productos_getdata", true);

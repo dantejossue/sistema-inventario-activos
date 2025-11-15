@@ -111,6 +111,11 @@ if (isset($_GET['op'])){
       $data = $producto->getProducto(["idproducto" => $_GET['idproducto']]);
       echo json_encode($data);
     }
+    
+    if($_GET['op'] == 'cargarActivo'){
+      $data = $activo->cargarActivo(["_idactivo" => $_GET['idactivo']]);
+      echo json_encode($data);
+    }
 
     if($_GET['op'] == 'filtrarCategorias'){
       $clave = $producto->filtrarCategoria(['idcategoria' => $_GET['idcategoria']]);
