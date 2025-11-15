@@ -104,93 +104,92 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1>Detalle del Activo</h1>
-      </div>
-      <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-          <!-- <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">Activo</li> -->
-          <a href="main.php?view=activo/index.php" class="btn btn-secondary btn-sm mt-2">
-            <i class="fas fa-arrow-left"></i> Regresar
-          </a>
-        </ol>
-      </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <h3 style="font-size: 22px"><b>Detalle del Activo</b></h3>
     </div>
-  </div><!-- /.container-fluid -->
+    <div class="col-sm-6">
+      <ol class="breadcrumb float-sm-right">
+        <!-- <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active">Activo</li> -->
+        <a href="main.php?view=activo/index.php" class="btn btn-secondary btn-sm">
+          <i class="fas fa-arrow-left"></i> Regresar
+        </a>
+      </ol>
+    </div>
+  </div>
 </section>
 
-<!-- Main content -->
-<section class="content">
-  <div class="card card-primary">
-    <div class="card-body">
+<div class="row">
+  <div class="col-md-12">
 
-      <div class="row">
+    <div class="card card-primary">
+      <div class="card-body">
 
-        <!-- FOTO DEL ACTIVO -->
-        <div class="col-md-4">
-          <div class="foto-card">
-            <img id="foto_activo" class="card-img-top" src="img/default.png" alt="Foto del activo">
-            <!-- Ícono ampliación -->
-            <div class="zoom-icon">
-              <i class="fas fa-search-plus"></i>
+        <div class="row">
+
+          <!-- FOTO DEL ACTIVO -->
+          <div class="col-md-4">
+            <div class="foto-card">
+              <img id="foto_activo" class="card-img-top" src="img/default.png" alt="Foto del activo">
+              <!-- Ícono ampliación -->
+              <div class="zoom-icon">
+                <i class="fas fa-search-plus"></i>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- DETALLES DEL ACTIVO -->
-        <div class="col-md-8">
+          <!-- DETALLES DEL ACTIVO -->
+          <div class="col-md-8">
 
-          <h3 id="nombre_activo" class="text-primary"></h3>
-          <p id="categoria_activo" class="text-muted mb-3"></p>
+            <h3 id="nombre_activo" class="text-primary"></h3>
+            <p id="categoria_activo" class="text-muted mb-3"></p>
 
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <th style="width: 200px;">Código Patrimonial:</th>
-                <td id="codigo_activo"></td>
-              </tr>
-              <tr>
-                <th style="width: 200px;">Nro Serie:</th>
-                <td id="numeroserie"></td>
-              </tr>
-              <tr>
-                <th>Estado:</th>
-                <td id="estado_activo"></td>
-              </tr>
-              <tr>
-                <th>Ubicación / Sede:</th>
-                <td id="sede_activo"></td>
-              </tr>
-              <tr>
-                <th>Área / Dependencia:</th>
-                <td id="dependencia_activo"></td>
-              </tr>
-              <tr>
-                <th>Responsable:</th>
-                <td id="responsable_activo"></td>
-              </tr>
-              <tr>
-                <th>Fecha de Registro:</th>
-                <td id="fecha_activo"></td>
-              </tr>
-            </tbody>
-          </table>
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <th style="width: 200px;">Código Patrimonial:</th>
+                  <td id="codigo_activo"></td>
+                </tr>
+                <tr>
+                  <th style="width: 200px;">Nro Serie:</th>
+                  <td id="numeroserie"></td>
+                </tr>
+                <tr>
+                  <th>Estado:</th>
+                  <td id="estado_activo"></td>
+                </tr>
+                <tr>
+                  <th>Ubicación / Sede:</th>
+                  <td id="sede_activo"></td>
+                </tr>
+                <tr>
+                  <th>Área / Dependencia:</th>
+                  <td id="dependencia_activo"></td>
+                </tr>
+                <tr>
+                  <th>Responsable:</th>
+                  <td id="responsable_activo"></td>
+                </tr>
+                <tr>
+                  <th>Fecha de Registro:</th>
+                  <td id="fecha_activo"></td>
+                </tr>
+              </tbody>
+            </table>
 
-          <h5 class="mt-4">Descripción:</h5>
-          <p id="descripcion_activo"></p>
+            <h5 class="mt-4">Descripción:</h5>
+            <p id="descripcion_activo"></p>
 
+          </div>
         </div>
       </div>
+      <!-- /.card-body -->
     </div>
-    <!-- /.card-body -->
+    <!-- /.card -->
   </div>
-  <!-- /.card -->
+</div>
 
-</section>
-<!-- /.content -->
 
 <script src="js/detalle_activo.js"></script>
 

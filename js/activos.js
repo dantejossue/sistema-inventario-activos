@@ -2,7 +2,8 @@ $(document).ready(function(){
 
     idactivo = "";
     var div_sede_dependencia = document.querySelector("#div_sede_dependencia");
-    var txtProducto = document.querySelector("#idproductomod");
+    var div_sede_dependencia_editar = document.querySelector("#div_sede_dependencia_editar");
+    var txt_idactivo = document.querySelector("#txt_idactivo");
     var botonActualizar = document.querySelector("#actualizar");
     var botonGuardar = document.querySelector("#registrar");
 
@@ -18,7 +19,7 @@ $(document).ready(function(){
     var select_dependencia = $("#select_dependencia").val();
     var foto = $("#foto")[0].files[0];
     var select_estado = $("#select_estado").val();
-    var observacion = $("#observacion").val();
+    var observacion = $("#txt_observacion").val();
 
     if (
         idcategoria == "" ||
@@ -60,13 +61,15 @@ $(document).ready(function(){
 
                 $.ajax({
                     url: "controllers/Activo.controller.php",
-                    type: "POST",              // ✅ DEBE SER POST
-                    data: formData,            // ✅ Usar FormData
-                    contentType: false,        // ✅ Obligatorio
-                    processData: false,        // ✅ Obligatorio
+                    type: "POST",              // DEBE SER POST
+                    data: formData,            // Usar FormData
+                    contentType: false,        // Obligatorio
+                    processData: false,        // Obligatorio
                     success: function (e) {
                         mostrarAlerta("success", "¡Registrado con éxito!");
                         $("#formularioActivo")[0].reset();
+                        div_sede_dependencia.classList.add('asignar');
+                        $("#modal_registrar").modal("hide");
                         listarActivos();
                     },
                     error: function (xhr, status, error) {
@@ -138,15 +141,12 @@ $(document).ready(function(){
         });
     }
 
-    // Cargar los nombres de las dependencias
-    function cargarDependencias(select){ 
-        var datos ={
-            'op': 'cargarDependencias'
-        };
-        $.ajax({
+
+    function cargarDependencias(select){
+        return $.ajax({
             url : 'controllers/Dependencia.controller.php',
             type: 'GET',
-            data: datos,
+            data: { op: 'cargarDependencias' },
             success:function(e){
                 $(select).html(e);
             }
@@ -154,14 +154,11 @@ $(document).ready(function(){
     }
     
     // Cargar los nombres de las dependencias
-    function cargarSede(select){ 
-        var datos ={
-            'op': 'cargarSede'
-        };
-        $.ajax({
+    function cargarSede(select){
+        return $.ajax({
             url : 'controllers/Sede.controller.php',
             type: 'GET',
-            data: datos,
+            data: { op: 'cargarSede' },
             success:function(e){
                 $(select).html(e);
             }
@@ -179,6 +176,7 @@ $(document).ready(function(){
             },
             success:function(e){
                 $('#select_sede').html(e);
+                $('#select_sede_editar').html(e);
                 // if(idDependenciaSeleccionada){
                 //     $('#select_dependencia').val(idDependenciaSeleccionada);
                 // }
@@ -197,6 +195,7 @@ $(document).ready(function(){
             },
             success:function(e){
                 $('#select_dependencia').html(e);
+                $('#select_dependencia_editar').html(e);
                 // if(idDependenciaSeleccionada){
                 //     $('#select_dependencia').val(idDependenciaSeleccionada);
                 // }
@@ -283,41 +282,66 @@ $(document).ready(function(){
     });
 
     $("#tablaActivo").on('click', ".modificar", function(){
-        let idproducto = $(this).attr('data-idproducto');
+        let idactivo = $(this).attr('data-idactivo');
 
         var datos = {
-            'op' : 'getProducto',
-            'idproducto' : idproducto
+            'op' : 'getActivo',
+            'idactivo' : idactivo
         };
         console.log(datos);
         $.ajax({
-            url: 'controllers/Producto.controller.php',
+            url: 'controllers/Activo.controller.php',
             type: 'GET',
             data: datos,
             success: function(result){                        
                 if ($.trim(result) != ""){
-                    //Asignamos y quitamos la clase que muestra la caja de texto
-                    $("#Aviso").html("Actualizar Producto");
-                    txtProducto.classList.remove('asignar');
-                    botonActualizar.classList.remove('asignar');
-                    botonGuardar.classList.add('asignar');
-                    $("#idcategoria").prop('disabled', true);
-                    $("#stock").prop('disabled', true);
-                    $("#fotografia").prop('disabled', true);
+
+                    // $("#idcategoria").prop('disabled', true);
+                    // $("#stock").prop('disabled', true);
+                    // $("#fotografia").prop('disabled', true);
 
                     // $("#descripcion").prop('disabled', true);
+                    
+                    div_sede_dependencia_editar.classList.remove('asignar');
                     
 
                     var resultado = JSON.parse(result);
                     // console.log(resultado);
                     
-                    $("#idcategoria").val(resultado[0].idcategoria);
-                    $("#stock").val(resultado[0].stock);
-                    $("#nombreproducto").val(resultado[0].nombreproducto);
+                     Promise.all([
+                        cargarSede("#select_sede_editar"),
+                        cargarDependencias("#select_dependencia_editar"),
+                    ]).then(() => {
+
+                    $("#idcategoria_editar").val(resultado[0].id_categoria);
+                    $("#txt_marca_editar").val(resultado[0].marca);
+                    
+                    $("#txt_modelo_editar").val(resultado[0].modelo);
+                    $("#txt_serie_editar").val(resultado[0].serie);
+                    $("#txt_patrimonial_editar").val(resultado[0].cod_patrimonial);
+                    $("#select_responsable_editar").val(resultado[0].id_administrativo);
+                    $("#select_sede_editar").val(resultado[0].id_sede);
+                    $("#select_dependencia_editar").val(resultado[0].id_dependencia);
+                    $("#select_estado_editar").val(resultado[0].estado);
+                    $("#txt_observacion_editar").val(resultado[0].observacion);
+
+                    // limpiar input file
+                    $("#foto_editar").val("");
+
+                    // actualizar label del input file
+                    if (resultado[0].foto && resultado[0].foto !== "") {
+                        $("#foto_editar").next(".custom-file-label").text(resultado[0].foto);
+                        $("#foto_actual").val(resultado[0].foto);
+                    } else {
+                        $("#foto_editar").next(".custom-file-label").text("Seleccione una imagen");
+                    }
+
                     // tinymce.get("nombreproducto").setContent(resultado[0].nombreproducto);
-                    txtProducto.setAttribute("data-idproducto", resultado[0].idproducto);
+                    txt_idactivo.setAttribute("data-idactivo", resultado[0].id_activo);
+
                     // $("#fechavencimiento").val(resultado[0].fechavencimiento);
-                    $("#idproductomod").hide();
+                    $("#modal_editar").modal("show");
+                    });
                 }else{
                     mostrarAlerta("warning", "¡No encontramos registros!");
                 }
@@ -325,52 +349,24 @@ $(document).ready(function(){
         });
     });
 
-    // $("#tablaActivo").on("click", ".ver", function(){
-    //     let idactivo = $(this).attr('data-idactivo');
 
-    //     var datos = {
-    //         'op' : 'cargarActivo',
-    //         'idactivo' : idactivo
-    //     };
+    $("#tablaActivo").on("click", ".mover", function(){
+    let id = $(this).data("idactivo");
 
-    //     console.log(datos);
-    //     $.ajax({
-    //         url: 'controllers/Activo.controller.php',
-    //         type: 'GET',
-    //         data: datos,
-    //         success: function(result){                        
-    //             if ($.trim(result) != ""){
-    //                 window.location.href = "main.php?view=activo/view_detalle.php&id=" + idactivo;
-                    
-    //                 var resultado = JSON.parse(result);
-    //                 // console.log(resultado);
-                    
-    //                 $("#idcategoria").val(resultado[0].idcategoria);
-    //                 $('$foto_activo').attr('src',resultado[0].foto);
-    //                 $("#nombre_activo").html(resultado[0].nombre_categoria);
-    //                 // tinymce.get("nombreproducto").setContent(resultado[0].nombreproducto);
-    //                 txtProducto.setAttribute("data-idproducto", resultado[0].idproducto);
-    //                 // $("#fechavencimiento").val(resultado[0].fechavencimiento);
-    //                 $("#idproductomod").hide();
+    $("#mov_idactivo").val(id);
+    $("#mov_fecha").val(new Date().toISOString().slice(0, 10)); // Fecha hoy
 
-    //             }else{
-    //                 mostrarAlerta("warning", "¡No encontramos registros!");
-    //             }
-    //         }
-    //     });
-    // }); 
+    // Cargar lista de responsables (si deseas desde AJAX)
+    cargarAdministrativos("#mov_responsable");
+
+    $("#modalMovimiento").modal("show");
+    });
+
 
     function volverActivos(){
         window.location.href = "main.php?view=activo";
     }
 
-    $("#cancelarRestock").click(function(){
-        $("#formularioRestock")[0].reset();
-    });
-
-    $("#cancelarSalidas").click(function(){
-        $("#formularioSalidas")[0].reset();
-    });
     
     $("#cancelar").click(function(){
         $("#formularioActivo")[0].reset();
@@ -387,52 +383,96 @@ $(document).ready(function(){
         div_sede_dependencia.classList.add('asignar');
     });
 
-    function modificarProducto(){
-        let idproducto = $("#idproductomod").attr('data-idproducto');
-        var nombreproducto = $("#nombreproducto").val();
+    function modificarActivo() {
 
+        let idactivo = $("#txt_idactivo").attr("data-idactivo");
 
-        if(nombreproducto == ""){
-            mostrarAlerta("warning", "¡Completar los campos necesarios!");
-        }else{
-            Swal.fire({
-                icon:'question',
-                title:'¿Está seguro de modificar?',
-                showCancelButton: true,
-                cancelButtonText:'Cancelar',
-                confirmButtonText:'Aceptar'
-            }).then((result) =>{
-                if(result.isConfirmed){
-                    var datos = {
-                        'op'                     : 'modificarProducto',
-                        'idproducto'             : idproducto,
-                        'nombreproducto'         : nombreproducto
-                    };
-                    console.log(datos);
-                    $.ajax({
-                        url: 'controllers/Producto.controller.php',
-                        type:'GET',
-                        data: datos,
-                        success:function(e){
-                            console.log(e);
-                            mostrarAlerta("success", "¡Modificado con éxito!");
+        let idcategoria = $("#idcategoria_editar").val();
+        let marca = $("#txt_marca_editar").val();
+        let modelo = $("#txt_modelo_editar").val();
+        let serie = $("#txt_serie_editar").val();
+        let codPatrimonial = $("#txt_patrimonial_editar").val();
+        let idadministrativo = $("#select_responsable_editar").val();
+        let idsede = $("#select_sede_editar").val();
+        let iddependencia = $("#select_dependencia_editar").val();
+        let estado = $("#select_estado_editar").val();
+        let observacion = $("#txt_observacion_editar").val();
+        let foto = $("#foto_editar")[0].files[0]; // archivo imagen
+        let foto_actual = $("#foto_actual").val();
 
-                            $("#formularioFarmacia")[0].reset();
-                            $("#Aviso").html("Registrar Producto");
-                            txtProducto.classList.add('asignar');
-                            botonActualizar.classList.add('asignar');
-                            botonGuardar.classList.remove('asignar');
-                            $("#idcategoria").prop('disabled', false);
-                            $("#fotografia").prop('disabled', false);
-                            $("#stock").prop('disabled', false);
-
-                            listarProductosFarmaciaPrueba();
-                        }
-                    });
-                }
-            });
+        // Validación mínima
+        if (
+            idcategoria == "" ||
+            marca == "" ||
+            modelo == "" ||
+            serie == "" ||
+            codPatrimonial == "" ||
+            !idadministrativo ||
+            !idsede ||
+            !iddependencia ||
+            !estado ||
+            observacion == ""
+        ) {
+            mostrarAlerta("warning", "¡Completa los campos obligatorios!");
+            return;
         }
+
+        Swal.fire({
+            icon: "question",
+            title: "¿Está seguro de modificar el activo?",
+            showCancelButton: true,
+            confirmButtonText: "Sí, modificar",
+            cancelButtonText: "Cancelar"
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+
+                let datos = new FormData();
+                datos.append("op", "modificarActivo");
+                datos.append("idactivo", idactivo);
+                datos.append("idcategoria", idcategoria);
+                datos.append("marca", marca);
+                datos.append("modelo", modelo);
+                datos.append("serie", serie);
+                datos.append("codPatrimonial", codPatrimonial);
+                datos.append("idadministrativo", idadministrativo);
+                datos.append("idsede", idsede);
+                datos.append("iddependencia", iddependencia);
+                datos.append("estado", estado);
+                datos.append("observacion", observacion);
+                datos.append("foto_actual", foto_actual);
+
+                if (foto !== undefined) {
+                    datos.append("foto", foto); // si cambia foto
+                }
+
+                $.ajax({
+                    url: "controllers/Activo.controller.php",
+                    type: "POST",
+                    data: datos,
+                    contentType: false,
+                    processData: false,
+                    success: function(e) {
+                        let r = JSON.parse(e);
+
+                        if (r.resultado == 1) {
+                            mostrarAlerta("success", "Activo modificado correctamente");
+                            $("#modal_editar").modal("hide");
+                            listarActivos();
+                        } else if (r.resultado == 2) {
+                            mostrarAlerta("error", "¡El código patrimonial ya está registrado!");
+                        } else {
+                            mostrarAlerta("error", "¡Error desconocido al modificar!");
+                        }
+                    }
+                });
+
+            }
+
+        });
+
     }
+
 
     $("#categoriaselect").change(function(){
         var filtros = $(this).val();
@@ -505,6 +545,15 @@ $(document).ready(function(){
         let idAdministrativo = $(this).val();
         if(idAdministrativo){
             div_sede_dependencia.classList.remove('asignar');
+            cargarSedePorAdministrativo(idAdministrativo)
+            cargarDependenciaPorAdministrativo(idAdministrativo)
+            // cargarDependenciasPorSede(idSede);
+        }
+    });
+
+    $('#select_responsable_editar').on('change', function(){
+        let idAdministrativo = $(this).val();
+        if(idAdministrativo){
             cargarSedePorAdministrativo(idAdministrativo)
             cargarDependenciaPorAdministrativo(idAdministrativo)
             // cargarDependenciasPorSede(idSede);
@@ -662,15 +711,16 @@ $(document).ready(function(){
     listarActivos();
     $("#registrar").click(activoYaExiste);
     $('#volver_').click(volverActivos);
-    // $("#actualizar").click(modificarProducto);
+    $("#actualizar").click(modificarActivo);
     // $("#btnRegistrarRestock").click(registrarRestock);
     // $("#btnRegistrarSalidas").click(registrarSalidas);
     cargarCategorias("#idcategoriasalida");
     cargarCategorias("#idcategoria");
     cargarCategorias("#idcategoriamodal");
     cargarCategorias("#categoriaselect");
+    cargarCategorias("#idcategoria_editar");
     cargarAdministrativos("#select_responsable");
+    cargarAdministrativos("#select_responsable_editar");
 
-    // cargarSede("#select_sede");
-    // cargarDependencias("#select_dependencia");
+    
 });

@@ -107,10 +107,10 @@ if (isset($_GET['op'])){
       ]);
     }
 
-    if($_GET['op'] == 'getProducto'){
-      $data = $producto->getProducto(["idproducto" => $_GET['idproducto']]);
-      echo json_encode($data);
-    }
+    // if($_GET['op'] == 'getProducto'){
+    //   $data = $producto->getProducto(["idproducto" => $_GET['idproducto']]);
+    //   echo json_encode($data);
+    // }
     
     if($_GET['op'] == 'cargarActivo'){
       $data = $activo->cargarActivo(["_idactivo" => $_GET['idactivo']]);
@@ -150,15 +150,20 @@ if (isset($_GET['op'])){
       }
     }
 
-    if($_GET['op'] == 'cargarProducto'){
-      $datosObtenidos = $producto->filtrarCategoria(['idcategoria' => $_GET['idcategoria']]);
-        echo "<option value=''>Seleccione</option>";
-        foreach($datosObtenidos as $valor){
-            echo"
-            <option value='$valor->idproducto'>$valor->nombreproducto</option>
-            ";
-        }
-    //   echo json_encode($data);
+    // if($_GET['op'] == 'cargarProducto'){
+    //   $datosObtenidos = $producto->filtrarCategoria(['idcategoria' => $_GET['idcategoria']]);
+    //     echo "<option value=''>Seleccione</option>";
+    //     foreach($datosObtenidos as $valor){
+    //         echo"
+    //         <option value='$valor->idproducto'>$valor->nombreproducto</option>
+    //         ";
+    //     }
+    // //   echo json_encode($data);
+    // }
+
+    if($_GET['op'] == 'getActivo'){
+      $data = $activo->getActivo(['_idactivo' => $_GET['idactivo']]);
+      echo json_encode($data);
     }
 
 }
@@ -166,7 +171,7 @@ if (isset($_GET['op'])){
 if(isset($_POST['op'])){
   $activo = new Activo();
 
-     if ($_POST['op'] == 'registrarActivo') {
+    if ($_POST['op'] == 'registrarActivo') {
 
       $nombre = "";
       if (!empty($_FILES['foto']['tmp_name'])) {
@@ -188,5 +193,52 @@ if(isset($_POST['op'])){
         }
       }
     }
+
+    if ($_POST['op'] == 'modificarActivo') {
+
+        $idactivo        = $_POST["idactivo"];
+        $idcategoria     = $_POST["idcategoria"];
+        $marca           = $_POST["marca"];
+        $modelo          = $_POST["modelo"];
+        $serie           = $_POST["serie"];
+        $codPatrimonial  = $_POST["codPatrimonial"];
+        $idadministrativo = $_POST["idadministrativo"];
+        $idsede          = $_POST["idsede"];
+        $iddependencia   = $_POST["iddependencia"];
+        $estado          = $_POST["estado"];
+        $observacion     = $_POST["observacion"];
+        $fotoActual      = $_POST["foto_actual"];
+
+        $nombreFoto = $fotoActual; // por defecto mantiene la misma foto
+
+        if (!empty($_FILES["foto"]["tmp_name"])) {
+            $nombreFoto = date('YmdHis') . ".jpg";
+            if (!move_uploaded_file($_FILES["foto"]["tmp_name"], "../img/" . $nombreFoto)) {
+                echo json_encode(["resultado" => 0, "mensaje" => "Error al guardar imagen"]);
+                exit;
+            }
+            if ($fotoActual != "" && file_exists("../img/" . $fotoActual)) {
+                unlink("../img/" . $fotoActual); // elimina foto anterior
+            }
+        }
+
+        $resultado = $activo->modificarActivo([
+            "_idactivo"          => $idactivo,
+            "_idcategoria"       => $idcategoria,
+            "_txt_marca"         => $marca,
+            "_txt_modelo"        => $modelo,
+            "_txt_serie"         => $serie,
+            "_txt_patrimonial"   => $codPatrimonial,
+            "_select_responsable"=> $idadministrativo,
+            "_select_sede"       => $idsede,
+            "_select_dependencia"=> $iddependencia,
+            "_foto"              => $nombreFoto,
+            "_select_estado"     => $estado,
+            "_observacion"       => $observacion
+        ]);
+
+        echo json_encode($resultado[0]);
+    }
+
 }
 ?>

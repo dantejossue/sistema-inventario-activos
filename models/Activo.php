@@ -29,9 +29,9 @@ class Activo extends ModelMaster{
     }
   }
 
-  public function modificarProducto(array $data){
+  public function modificarActivo(array $data){
     try{
-        parent::execProcedure($data, "spu_productos_modificar", false);
+        return parent::execProcedure($data,"spu_activo_editar", true);
     }catch(Exception $error){
         die($error->getMessage());
     }
@@ -45,9 +45,9 @@ class Activo extends ModelMaster{
       }
   }
 
-  public function getProducto(array $data){
+  public function getActivo(array $data){
       try{
-          return parent::execProcedure($data, "spu_productos_getdata", true);
+          return parent::execProcedure($data, "spu_activo_getdata", true);
       }catch(Exception $error){
           die($error->getMessage());
       }
