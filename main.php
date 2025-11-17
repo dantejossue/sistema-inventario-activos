@@ -295,7 +295,7 @@
   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   
   <!-- select2 -->
-  <script src="plugins/select2/js/select2.min.js"></script>
+  <script src="plugins/select2/js/select2.full.min.js"></script>
   
   <!-- AdminLTE App -->
   <script src="dist/js/adminlte.js"></script>
@@ -321,23 +321,23 @@
   <script src="https://cdn.jsdelivr.net/npm/smartwizard@6/dist/js/jquery.smartWizard.min.js" type="text/javascript"></script>
   <!-- <script src="https://cdn.tiny.cloud/1/4wqx4j9cpb6doqzr81ox1xrsx2e9fgddsqtvmdx1mwij8gr8/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script> -->
   <script src="js/alertas.js"></script>
+
   <script>
     $(document).ready(function(){
-
       let content = getParam("view");
-
+      
       if (!content) {
-          $("#contenido").load("view/index.php");
+        $("#contenido").load("view/index.php");
       } else {
-
-          // Si se pide un archivo .php → lo carga directamente
-          if (content.includes(".php")) {
-              $("#contenido").load("view/" + content);
-          }
-          // Si NO → carga el módulo/index.php
-          else {
-              $("#contenido").load("view/" + content + "/index.php");
-          }
+        
+        // Si se pide un archivo .php → lo carga directamente
+        if (content.includes(".php")) {
+          $("#contenido").load("view/" + content);
+        }
+        // Si NO → carga el módulo/index.php
+        else {
+          $("#contenido").load("view/" + content + "/index.php");
+        }
       }
     });
 
@@ -357,6 +357,8 @@
     window.onload=function(){
       startTime();
     }
+
+    
   </script>
 
 </body>

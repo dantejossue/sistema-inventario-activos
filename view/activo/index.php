@@ -110,7 +110,7 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
 
 
 <!-- Modal Registrar -->
-<div class="modal fade" id="modal_registrar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="modal_registrar" data-backdrop="static" data-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -129,7 +129,7 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
                     <div class="row">
                         <div class="col-sm-4 mb-3">
                             <label for="idcategoria">Categoría:</label>
-                            <select class="form-control select2" name="idcategoria" id="idcategoria">
+                            <select class="form-control select2" name="idcategoria" id="idcategoria" style="width: 100%;">
                             </select>
                         </div>
                         <div class="col-sm-4 mb-3">
@@ -150,7 +150,7 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
                         </div>
                         <div class="col-sm-5 mb-3">
                             <label for="select_responsable">Responsable Administrativo:</label>
-                            <select id="select_responsable" name="select_responsable" class="form-control select2">
+                            <select id="select_responsable" name="select_responsable" class="form-control select2" style="width: 100%;">
                             </select>
                         </div>
                         <div class="col-sm-12 asignar m-0" id="div_sede_dependencia">
@@ -167,10 +167,6 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="col-6 mb-3">
-                        <label for="fotografia">Fotografia:</label>
-                        <input type="file" id="fotografia" class="form-control">
-                    </div> -->
                         <div class="col-sm-6 mb-3">
                             <label for="foto">Fotografia:</label>
                             <div class="input-group">
@@ -210,7 +206,7 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
 
 
 <!-- Modal Editar -->
-<div class="modal fade" id="modal_editar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="modal_editar" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -229,7 +225,7 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
                     <div class="row">
                         <div class="col-sm-4 mb-3">
                             <label for="idcategoria_editar">Categoría:</label>
-                            <select class="form-control select2" name="idcategoria_editar" id="idcategoria_editar">
+                            <select class="form-control select2" name="idcategoria_editar" id="idcategoria_editar" style="width: 100%;">
                             </select>
                         </div>
                         <div class="col-sm-4 mb-3">
@@ -250,7 +246,7 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
                         </div>
                         <div class="col-sm-5 mb-3">
                             <label for="select_responsable_editar">Responsable Administrativo:</label>
-                            <select id="select_responsable_editar" name="select_responsable_editar" class="form-control select2">
+                            <select id="select_responsable_editar" name="select_responsable_editar" class="form-control select2" style="width: 100%;">
                             </select>
                         </div>
                         <div class="col-sm-12 asignar m-0" id="div_sede_dependencia_editar">
@@ -312,73 +308,109 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
 
 
 <!-- Modal Movimiento de Activo -->
-<div class="modal fade" id="modalMovimiento" tabindex="-1">
-  <div class="modal-dialog">
-    <form id="formMovimiento" enctype="multipart/form-data">
-      <div class="modal-content">
+<div class="modal fade" id="modalMovimiento" data-backdrop="static" data-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="formMovimiento" enctype="multipart/form-data">
+            <div class="modal-content">
 
-        <div class="modal-header bg-secondary text-white">
-          <h5 class="modal-title">Registrar Movimiento del Activo</h5>
-          <button type="button" class="close" data-dismiss="modal">
-            <span>&times;</span>
-          </button>
-        </div>
+                <div class="modal-header bg-secondary text-white">
+                    <h5 class="modal-title">Registrar Movimiento del Activo</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
 
-        <div class="modal-body">
+                <div class="modal-body">
 
-          <input type="hidden" id="mov_idactivo" name="idactivo">
+                    <input type="hidden" id="mov_idactivo" name="idactivo">
 
-          <div class="form-group">
-            <label>Tipo de movimiento:</label>
-            <select name="tipo" id="mov_tipo" class="form-control" required>
-              <option value="">Seleccione...</option>
-              <option value="PRESTAMO">En calidad de Préstamo</option>
-              <option value="TRANSFERENCIA">En calidad de Transferencia</option>
-            </select>
-          </div>
+                    <div class="form-group">
+                        <label>Tipo de movimiento:</label>
+                        <select name="tipo" id="mov_idtipo" class="form-control" required>
+                            <option value="" disabled selected>Seleccione...</option>
+                            <option value="PRESTAMO">En calidad de Préstamo</option>
+                            <option value="TRANSFERENCIA">En calidad de Transferencia</option>
+                        </select>
+                    </div>
 
-          <div class="form-group">
-            <label>Fecha movimiento:</label>
-            <input type="date" class="form-control" name="fecha" id="mov_fecha" required>
-          </div>
+                    <div class="form-group">
+                        <label>Fecha movimiento:</label>
+                        <input type="date" class="form-control" name="fecha" id="mov_fecha" required readonly>
+                    </div>
 
-          <div class="form-group">
-            <label>Motivo / Sustento:</label>
-            <textarea class="form-control" name="motivo" id="mov_motivo" rows="3" required></textarea>
-          </div>
+                    <div id="div_prestamo" style="display:none;">
+                        <div class="form-group">
+                            <label>Tiempo de préstamo (días):</label>
+                            <input type="number" class="form-control" id="prestamo_tiempo" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Motivo / Sustento:</label>
+                            <textarea class="form-control" id="prestamo_motivo" rows="3" required></textarea>
+                        </div>
+                    </div>
 
-          <div class="form-group">
-            <label>Responsable destino (si aplica):</label>
-            <select class="form-control" name="responsable" id="mov_responsable">
-            </select>
-            <small class="form-text text-muted">
-              Solo si es Transferencia o si deseas asignar a otro responsable.
-            </small>
-          </div>
+                    <div id="div_transferencia" style="display:none;">
+                        <div class="form-group">
+                            <label>Responsable destino:</label>
+                            <select id="mov_responsable" class="form-control select2" style="width: 100%;"></select>
+                        </div>
 
-        </div>
+                        <div class="form-group">
+                            <label>Sede destino:</label>
+                            <select id="sede_destino" class="form-control" readonly></select>
+                        </div>
 
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-primary">Registrar Movimiento</button>
-        </div>
+                        <div class="form-group">
+                            <label>Dependencia destino:</label>
+                            <select id="dependencia_destino" class="form-control" readonly></select>
+                        </div>
 
-      </div>
-    </form>
-  </div>
+                        <div class="form-group">
+                            <label>Motivo / Sustento:</label>
+                            <textarea class="form-control" id="transferencia_motivo"  rows="3" required></textarea>
+                        </div>
+                    </div>
+
+                    <!-- <div class="form-group">
+                        <label>Motivo / Sustento:</label>
+                        <textarea class="form-control" name="motivo" id="mov_motivo" rows="3" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Responsable destino (si aplica):</label>
+                        <select class="form-control" name="responsable" id="mov_responsable">
+                        </select>
+                        <small class="form-text text-muted">
+                            Solo si es Transferencia o si deseas asignar a otro responsable.
+                        </small>
+                    </div> -->
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelar_mov">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Registrar Movimiento</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
 </div>
 
 
 
 <script src="js/activos.js"></script>
-
 <script>
-    $(document).on("change", "#foto", function () {
+    $(document).ready(function(){
+        $('.select2').select2();
+    });
+
+    $(document).on("change", "#foto", function() {
         let fileName = $(this).val().split("\\").pop();
         $(this).next(".custom-file-label").html(fileName);
     });
 
-    $(document).on("change", "#foto_editar", function () {
+    $(document).on("change", "#foto_editar", function() {
         let fileName = $(this).val().split("\\").pop();
         $(this).next(".custom-file-label").html(fileName);
     });
@@ -388,5 +420,17 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
 
         // Redirigir a la página detalle
         window.location.href = "main.php?view=activo/view_detalle.php&id=" + idactivo;
+    });
+
+    $('#mov_idtipo').on('change', function() {
+        let tipo = $(this).val();
+
+        if (tipo == "PRESTAMO") {
+            $('#div_prestamo').show(); // tiempo + motivo
+            $('#div_transferencia').hide(); // responsable + sede + dependencia
+        } else if (tipo == "TRANSFERENCIA") {
+            $('#div_prestamo').hide();
+            $('#div_transferencia').show();
+        }
     });
 </script>

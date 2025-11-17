@@ -3,6 +3,8 @@ $(document).ready(function(){
     idactivo = "";
     var div_sede_dependencia = document.querySelector("#div_sede_dependencia");
     var div_sede_dependencia_editar = document.querySelector("#div_sede_dependencia_editar");
+    var div_transferencia = document.querySelector("#div_sede_dependencia_editar");
+    var div_prestamo = document.querySelector("#div_sede_dependencia_editar");
     var txt_idactivo = document.querySelector("#txt_idactivo");
     var botonActualizar = document.querySelector("#actualizar");
     var botonGuardar = document.querySelector("#registrar");
@@ -68,6 +70,12 @@ $(document).ready(function(){
                     success: function (e) {
                         mostrarAlerta("success", "¡Registrado con éxito!");
                         $("#formularioActivo")[0].reset();
+                        $("#select_responsable").val(null).trigger('change');
+                        $("#select_sede").val(null).trigger('change');
+                        $("#select_dependencia").val(null).trigger('change');
+                        $("#idcategoria").val(null).trigger('change');
+                        $("#foto").next(".custom-file-label").text("Eliga imagen");
+                        $("#foto").val("");
                         div_sede_dependencia.classList.add('asignar');
                         $("#modal_registrar").modal("hide");
                         listarActivos();
@@ -177,6 +185,7 @@ $(document).ready(function(){
             success:function(e){
                 $('#select_sede').html(e);
                 $('#select_sede_editar').html(e);
+                $('#sede_destino').html(e);
                 // if(idDependenciaSeleccionada){
                 //     $('#select_dependencia').val(idDependenciaSeleccionada);
                 // }
@@ -196,6 +205,7 @@ $(document).ready(function(){
             success:function(e){
                 $('#select_dependencia').html(e);
                 $('#select_dependencia_editar').html(e);
+                $('#dependencia_destino').html(e);
                 // if(idDependenciaSeleccionada){
                 //     $('#select_dependencia').val(idDependenciaSeleccionada);
                 // }
@@ -313,13 +323,13 @@ $(document).ready(function(){
                         cargarDependencias("#select_dependencia_editar"),
                     ]).then(() => {
 
-                    $("#idcategoria_editar").val(resultado[0].id_categoria);
+                    $("#idcategoria_editar").val(resultado[0].id_categoria).trigger('change');
                     $("#txt_marca_editar").val(resultado[0].marca);
                     
                     $("#txt_modelo_editar").val(resultado[0].modelo);
                     $("#txt_serie_editar").val(resultado[0].serie);
                     $("#txt_patrimonial_editar").val(resultado[0].cod_patrimonial);
-                    $("#select_responsable_editar").val(resultado[0].id_administrativo);
+                    $("#select_responsable_editar").val(resultado[0].id_administrativo).trigger('change');
                     $("#select_sede_editar").val(resultado[0].id_sede);
                     $("#select_dependencia_editar").val(resultado[0].id_dependencia);
                     $("#select_estado_editar").val(resultado[0].estado);
@@ -351,15 +361,15 @@ $(document).ready(function(){
 
 
     $("#tablaActivo").on("click", ".mover", function(){
-    let id = $(this).data("idactivo");
+        let id = $(this).data("idactivo");
 
-    $("#mov_idactivo").val(id);
-    $("#mov_fecha").val(new Date().toISOString().slice(0, 10)); // Fecha hoy
+        $("#mov_idactivo").val(id);
+        $("#mov_fecha").val(new Date().toISOString().slice(0, 10)); // Fecha hoy
 
-    // Cargar lista de responsables (si deseas desde AJAX)
-    cargarAdministrativos("#mov_responsable");
+        // Cargar lista de responsables (si deseas desde AJAX)
+        cargarAdministrativos("#mov_responsable");
 
-    $("#modalMovimiento").modal("show");
+        $("#modalMovimiento").modal("show");
     });
 
 
@@ -370,17 +380,31 @@ $(document).ready(function(){
     
     $("#cancelar").click(function(){
         $("#formularioActivo")[0].reset();
+        $("#select_responsable").val(null).trigger('change');
+        $("#select_sede").val(null).trigger('change');
+        $("#select_dependencia").val(null).trigger('change');
+        $("#idcategoria").val(null).trigger('change');
+        $("#foto").next(".custom-file-label").text("Eliga imagen");
+        $("#foto").val("");
         div_sede_dependencia.classList.add('asignar');
-        botonActualizar.classList.add('asignar');
-        botonGuardar.classList.remove('asignar');
-        // $("#idcategoria").prop('disabled', false);
-        // $("#stock").prop('disabled', false);
-        // $("#fotografia").prop('disabled', false);
     });
 
     $("#borrar_datos_modal").click(function(){
         $("#formularioActivo")[0].reset();
+        $("#select_responsable").val(null).trigger('change');
+        $("#select_sede").val(null).trigger('change');
+        $("#select_dependencia").val(null).trigger('change');
+        $("#idcategoria").val(null).trigger('change');
+        $("#foto").next(".custom-file-label").text("Eliga imagen");
+        $("#foto").val("");
         div_sede_dependencia.classList.add('asignar');
+    });
+
+    $("#cancelar_mov").click(function(){
+        $("#formMovimiento")[0].reset();
+        $("#select_responsable").val(null).trigger('change');
+        div_transferencia.classList.add('asignar');
+        div_prestamo.classList.add('asignar');
     });
 
     function modificarActivo() {
@@ -560,7 +584,17 @@ $(document).ready(function(){
         }
     });
 
-    function registrarRestock(){
+    $('#mov_responsable').on('change', function(){
+        let idAdministrativo = $(this).val();
+        if(idAdministrativo){
+            cargarSedePorAdministrativo(idAdministrativo)
+            cargarDependenciaPorAdministrativo(idAdministrativo)
+            // cargarDependenciasPorSede(idSede);
+        }
+    });
+
+
+    function registrarMovimiento(){
         let idproductomodal = $("#idproductomodal").val();
         let cantidad = $("#cantidad").val();
         let detallereestock = $("#detallereestock").val();
