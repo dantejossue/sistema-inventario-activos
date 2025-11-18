@@ -166,6 +166,27 @@ if (isset($_GET['op'])){
       echo json_encode($data);
     }
 
+    if ($_GET['op'] == 'registrarMovPrestamo'){
+
+        $activo->registrarMovPrestamo([
+            "_idactivo"         => $_GET["idactivo"],
+            "_tipo"             => $_GET["mov_idtipo"],
+            "_fecha"            => $_GET["mov_fecha"],
+
+            // Responsable actual (quien tiene el activo)
+            "_responsable_actual" => $_GET["pres_responsable"],
+
+            // Custodio temporal
+            "_custodio_temporal" => $_GET["resp_temporal"],
+
+            // Tiempo de préstamo
+            "_tiempo"            => $_GET["prestamo_tiempo"],
+
+            // Motivo
+            "_motivo"            => $_GET["prestamo_motivo"]
+        ]);
+    }
+
 }
 
 if(isset($_POST['op'])){

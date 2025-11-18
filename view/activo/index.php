@@ -337,8 +337,18 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
                         <label>Fecha movimiento:</label>
                         <input type="date" class="form-control" name="fecha" id="mov_fecha" required readonly>
                     </div>
+                    <input id="idresponsable" hidden>
 
-                    <div id="div_prestamo" style="display:none;">
+                    <!-- Prestamo -->
+                    <div id="div_prestamo" class="asignar">
+                        <div class="form-group">
+                            <label>Responsable:</label>
+                            <input type="text" class="form-control" id="pres_responsable" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Custodio Temporal (Administrativo):</label>
+                            <select id="resp_temporal" class="form-control select2" style="width: 100%;"></select>
+                        </div>
                         <div class="form-group">
                             <label>Tiempo de préstamo (días):</label>
                             <input type="number" class="form-control" id="prestamo_tiempo" min="1" required>
@@ -349,7 +359,12 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
                         </div>
                     </div>
 
-                    <div id="div_transferencia" style="display:none;">
+                    <!-- Transferencia -->
+                    <div id="div_transferencia" class="asignar">
+                        <div class="form-group">
+                            <label>Responsable Actual:</label>
+                            <input type="text" class="form-control" id="transf_responsable" readonly>
+                        </div>
                         <div class="form-group">
                             <label>Responsable destino:</label>
                             <select id="mov_responsable" class="form-control select2" style="width: 100%;"></select>
@@ -389,7 +404,7 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelar_mov">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Registrar Movimiento</button>
+                    <button type="submit" class="btn btn-primary" id="registrar_mov">Registrar Movimiento</button>
                 </div>
 
             </div>
@@ -422,15 +437,5 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
         window.location.href = "main.php?view=activo/view_detalle.php&id=" + idactivo;
     });
 
-    $('#mov_idtipo').on('change', function() {
-        let tipo = $(this).val();
-
-        if (tipo == "PRESTAMO") {
-            $('#div_prestamo').show(); // tiempo + motivo
-            $('#div_transferencia').hide(); // responsable + sede + dependencia
-        } else if (tipo == "TRANSFERENCIA") {
-            $('#div_prestamo').hide();
-            $('#div_transferencia').show();
-        }
-    });
+   
 </script>

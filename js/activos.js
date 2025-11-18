@@ -3,9 +3,10 @@ $(document).ready(function(){
     idactivo = "";
     var div_sede_dependencia = document.querySelector("#div_sede_dependencia");
     var div_sede_dependencia_editar = document.querySelector("#div_sede_dependencia_editar");
-    var div_transferencia = document.querySelector("#div_sede_dependencia_editar");
-    var div_prestamo = document.querySelector("#div_sede_dependencia_editar");
+    var div_transferencia = document.querySelector("#div_transferencia");
+    var div_prestamo = document.querySelector("#div_prestamo");
     var txt_idactivo = document.querySelector("#txt_idactivo");
+    var txt_idactivo_mov = document.querySelector("#mov_idactivo");
     var botonActualizar = document.querySelector("#actualizar");
     var botonGuardar = document.querySelector("#registrar");
 
@@ -149,6 +150,21 @@ $(document).ready(function(){
         });
     }
 
+    function cargarOtrosAdministrativos(select){ 
+        let idadministrativo = $("#idresponsable").val();
+        var datos ={
+            'op': 'cargarOtrosAdministrativos',
+            'idadministrativo' : idadministrativo
+        };
+        $.ajax({
+            url : 'controllers/Administrativo.controller.php',
+            type: 'GET',
+            data: datos,
+            success:function(e){
+                $(select).html(e);
+            }
+        });
+    }
 
     function cargarDependencias(select){
         return $.ajax({
@@ -288,7 +304,7 @@ $(document).ready(function(){
                     }
                 });
             }
-            });
+        });
     });
 
     $("#tablaActivo").on('click', ".modificar", function(){
@@ -361,15 +377,47 @@ $(document).ready(function(){
 
 
     $("#tablaActivo").on("click", ".mover", function(){
-        let id = $(this).data("idactivo");
+        let idactivo = $(this).data("idactivo");
 
-        $("#mov_idactivo").val(id);
+        $("#mov_idactivo").val(idactivo);
         $("#mov_fecha").val(new Date().toISOString().slice(0, 10)); // Fecha hoy
 
         // Cargar lista de responsables (si deseas desde AJAX)
-        cargarAdministrativos("#mov_responsable");
-
+        
+        
         $("#modalMovimiento").modal("show");
+
+        var datos = {
+            'op' : 'getAdministrativoActivo',
+            'idactivo' : idactivo
+        };
+
+        // console.log(datos);
+        $.ajax({
+            url: 'controllers/Administrativo.controller.php',
+            type: 'GET',
+            data: datos,
+            success: function(resultado){                        
+                if ($.trim(resultado) != ""){
+                    
+                    // console.log("RESPUESTA:", resultado);
+                    
+                    let data = JSON.parse(resultado); // ← IMPORTANTE
+                    $("#idresponsable").val(data[0].id_administrativo);
+                    $("#pres_responsable").val(data[0].npersona);
+                    $("#transf_responsable").val(data[0].npersona);
+
+                    txt_idactivo_mov.setAttribute("data-idactivo", data[0].id_activo);
+
+                    cargarOtrosAdministrativos("#resp_temporal");
+                    cargarOtrosAdministrativos("#mov_responsable");
+                } else {
+                    mostrarAlerta("warning", "¡No encontramos registros!");
+                }
+            }
+        });
+
+
     });
 
 
@@ -403,6 +451,8 @@ $(document).ready(function(){
     $("#cancelar_mov").click(function(){
         $("#formMovimiento")[0].reset();
         $("#select_responsable").val(null).trigger('change');
+        $("#sede_destino").val(null).trigger('change');
+        $("#dependencia_destino").val(null).trigger('change');
         div_transferencia.classList.add('asignar');
         div_prestamo.classList.add('asignar');
     });
@@ -593,13 +643,32 @@ $(document).ready(function(){
         }
     });
 
+     $('#mov_idtipo').on('change', function() {
+        let tipo = $(this).val();
+        var div_prestamo = document.querySelector("#div_prestamo");
+        var div_transferencia = document.querySelector("#div_transferencia");
 
-    function registrarMovimiento(){
-        let idproductomodal = $("#idproductomodal").val();
-        let cantidad = $("#cantidad").val();
-        let detallereestock = $("#detallereestock").val();
+        if (tipo == "PRESTAMO") {
+            div_prestamo.classList.remove('asignar'); // tiempo + motivo
+            div_transferencia.classList.add('asignar');
+
+        } else if (tipo == "TRANSFERENCIA") {
+            div_transferencia.classList.remove('asignar');
+            div_prestamo.classList.add('asignar');
+        }
+    });
+
+
+    function registrarMovimientoPrestamo(){
+        let idactivo = $("#mov_idactivo").attr("data-idactivo");
+        let mov_idtipo = $("#mov_idtipo").val();
+        let mov_fecha = $("#mov_fecha").val();
+        let prestamo_tiempo = $("#prestamo_tiempo").val();
+        let pres_responsable = $("#idresponsable").val();
+        let resp_temporal = $("#resp_temporal").val();
+        let prestamo_motivo = $("#prestamo_motivo").val();
         
-        if(idproductomodal == "" || cantidad == "" || detallereestock == ""){
+        if(mov_idtipo == "" || mov_fecha == "" || pres_responsable == "" || resp_temporal == "" || prestamo_tiempo == "" || prestamo_motivo == ""){
             mostrarAlerta("warning", "¡Completar los campos necesarios!");
         }else{
             Swal.fire({
@@ -611,19 +680,86 @@ $(document).ready(function(){
             }).then((result) =>{
                 if(result.isConfirmed){
                     var datos ={
-                        'op' : 'registrarRestock',
-                        'idproducto' : idproductomodal,
-                        'cantidad' : cantidad,
-                        'detallereestock' : detallereestock
+                        'op' : 'registrarMovPrestamo',
+                        'idactivo' : idactivo,
+                        'mov_idtipo' : mov_idtipo,
+                        'mov_fecha' : mov_fecha,
+                        'pres_responsable' : pres_responsable,
+                        'resp_temporal' : resp_temporal,
+                        'prestamo_tiempo' : prestamo_tiempo,
+                        'prestamo_motivo' : prestamo_motivo
                     };
                     console.log(datos);
                     $.ajax({
-                        url: 'controllers/Restock.controller.php',
+                        url: 'controllers/Activo.controller.php',
                         type: 'GET',
                         data: datos,
                         success: function(e){
                             mostrarAlerta("success", "¡Registrado con éxito!");
-                            $("#formularioRestock")[0].reset();
+                            $("#formMovimiento")[0].reset();
+                            $("#select_responsable").val(null).trigger('change');
+                            $("#sede_destino").val(null).trigger('change');
+                            $("#dependencia_destino").val(null).trigger('change');
+                            div_transferencia.classList.add('asignar');
+                            div_prestamo.classList.add('asignar');
+                            $("#modalMovimiento").modal("hide");
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    function validarTipoMov(){
+        let mov_idtipo = $("#mov_idtipo").val();
+
+        if(mov_idtipo == 'PRESTAMO'){
+            registrarMovimientoPrestamo();
+        }else if(mov_idtipo == 'TRANSFERENCIA'){
+            registrarMovimientoTransferencia();
+        }else{
+            mostrarAlerta("error","Seleccione movimiento a realizar!")
+        }
+    }
+
+    function registrarMovimientoTransferencia(){
+        let idactivo = $("#mov_idactivo").attr("data-idactivo");
+        let mov_idtipo = $("#mov_idtipo").val();
+        let mov_fecha = $("#mov_fecha").val();
+        let prestamo_tiempo = $("#prestamo_tiempo").val();
+        let pres_responsable = $("#pres_responsable").val();
+        let resp_temporal = $("#resp_temporal").val();
+        let prestamo_motivo = $("#prestamo_motivo").val();
+        
+        if(mov_idtipo == "" || mov_fecha == "" || pres_responsable == "" || resp_temporal == "" || prestamo_tiempo == "" || prestamo_motivo == ""){
+            mostrarAlerta("warning", "¡Completar los campos necesarios!");
+        }else{
+            Swal.fire({
+                icon: 'question',
+                title: '¿Está seguro de registrar?',
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Confirmar'
+            }).then((result) =>{
+                if(result.isConfirmed){
+                    var datos ={
+                        'op' : 'registrarMovTransferencia',
+                        'idactivo' : idactivo,
+                        'mov_idtipo' : mov_idtipo,
+                        'mov_fecha' : mov_fecha,
+                        'pres_responsable' : pres_responsable,
+                        'resp_temporal' : resp_temporal,
+                        'prestamo_tiempo' : prestamo_tiempo,
+                        'prestamo_motivo' : prestamo_motivo
+                    };
+                    console.log(datos);
+                    $.ajax({
+                        url: 'controllers/Activo.controller.php',
+                        type: 'GET',
+                        data: datos,
+                        success: function(e){
+                            mostrarAlerta("success", "¡Registrado con éxito!");
+                            $("#formularioA")[0].reset();
                             listarProductosFarmaciaPrueba();
                         }
                     });
@@ -755,6 +891,8 @@ $(document).ready(function(){
     cargarCategorias("#idcategoria_editar");
     cargarAdministrativos("#select_responsable");
     cargarAdministrativos("#select_responsable_editar");
-
+    
+    
+    $("#registrar_mov").click(validarTipoMov);
     
 });

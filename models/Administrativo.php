@@ -12,6 +12,15 @@ class Administrativo extends ModelMaster{
         }
     }
 
+
+    public function cargarOtrosAdministrativos(array $data){
+        try{
+            return parent::execProcedure($data,"spu_administrativoOtros_cargar", true);
+        }catch(Exception $error){
+            die($error->getMessage());
+        }
+    }
+
     public function cargarDependencia(){
         try{
           return parent::getRows("spu_dependencia_cargar");
@@ -64,6 +73,14 @@ class Administrativo extends ModelMaster{
     public function getAdministrativo(array $data){
         try{
             return parent::execProcedure($data, "spu_administrativo_getdata", true);
+        }catch(Exception $error){
+            die($error->getMessage());
+        }
+    }
+
+    public function getAdministrativoActivo(array $data){
+        try{
+            return parent::execProcedure($data, "spu_administrativo_activo_getdata", true);
         }catch(Exception $error){
             die($error->getMessage());
         }

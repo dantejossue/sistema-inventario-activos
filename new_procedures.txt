@@ -39,6 +39,32 @@ create table activo (
     
 );
 
+create table movimiento (
+	id_movimiento int PRIMARY KEY AUTO_INCREMENT,
+    id_activo int,
+    tipo_mov ENUM('PRESTAMO','TRANSFERENCIA'),
+    id_administrativo int,
+    sede_origen_id int,
+    sede_destino_id int,
+    dependencia_origen_id int,
+    dependencia_destino_id int,
+    motivo varchar(255),
+    fecha_mov timestamp DEFAULT CURRENT_TIMESTAMP,
+    informe_doc varchar(200),
+    tiempo_mov varchar(20),
+    CONSTRAINT fk_movimiento_activo 
+    FOREIGN KEY (id_activo) REFERENCES activo(id_activo),
+    CONSTRAINT fk_movimiento_administrativo 
+    FOREIGN KEY (id_administrativo) REFERENCES administrativo(id_administrativo),
+    CONSTRAINT fk_movsedeorigen_sede
+    FOREIGN KEY (sede_origen_id) REFERENCES sede(id_sede), 
+    CONSTRAINT fk_movsededestino_sede
+    FOREIGN KEY (sede_destino_id) REFERENCES sede(id_sede), 
+    CONSTRAINT fk_movdepenorigen_dependencia
+    FOREIGN KEY (dependencia_origen_id) REFERENCES dependencia(id_dependencia),
+    CONSTRAINT fk_movdependestino_dependencia
+    FOREIGN KEY (dependencia_destino_id) REFERENCES dependencia(id_dependencia)
+);
 
 PROCEDIMIENTOS:
 

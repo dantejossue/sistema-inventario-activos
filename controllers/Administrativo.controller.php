@@ -18,6 +18,19 @@ if (isset($_GET['op'])){
     //   echo json_encode($data);
   }
 
+  if($_GET['op'] == 'cargarOtrosAdministrativos'){ 
+    $datosObtenidos = $administrativo->cargarOtrosAdministrativos([
+      '_idadministrativo' => $_GET['idadministrativo']
+    ]);
+      echo "<option value='' selected disabled>-- Seleccione Administrativo --</option>";
+      foreach($datosObtenidos as $valor){
+          echo"
+          <option value='$valor->id_administrativo'>$valor->npersona</option>
+          ";
+      }
+    //   echo json_encode($data);
+  }
+
   if($_GET['op'] == 'listarSedePorAdministrativo'){ 
     $datosObtenidos = $administrativo->listarSedePorAdministrativo([
       '_idadministrativo' => $_GET['idAdministrativo']
@@ -124,6 +137,12 @@ if (isset($_GET['op'])){
   
   if($_GET['op'] == 'getAdministrativo'){
     $data = $administrativo->getAdministrativo(["idadministrativo" => $_GET['idadministrativo']]);
+
+    echo json_encode($data);
+  }
+
+  if($_GET['op'] == 'getAdministrativoActivo'){
+    $data = $administrativo->getAdministrativoActivo(["_idactivo" => $_GET['idactivo']]);
 
     echo json_encode($data);
   }

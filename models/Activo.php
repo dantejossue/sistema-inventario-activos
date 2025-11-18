@@ -28,6 +28,14 @@ class Activo extends ModelMaster{
         die($error->getMessage());
     }
   }
+  
+  public function registrarMovPrestamo(array $data){
+        try{
+            parent::execProcedure($data, "spu_movimientoPrestamo_registrar", false);
+        }catch(Exception $error){
+            die($error->getMessage());
+        }
+    }
 
   public function modificarActivo(array $data){
     try{
