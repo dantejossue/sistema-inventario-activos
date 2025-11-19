@@ -35,6 +35,14 @@ if (isset($_GET['op'])){
         $i = 1;
         foreach ($rows as $r) {
 
+          $rowStyle = "";
+          if ($r->ultimo_movimiento == "PRESTAMO") {
+              $rowStyle = "style='background:#e8f4ff'"; // celeste suave
+          } 
+          elseif ($r->ultimo_movimiento == "TRANSFERENCIA") {
+              $rowStyle = "style='background:#fff7e6'"; // amarillo suave
+          }
+
           switch ($r->estado) {
             case 'BUENO':
               $badge = "<span class='badge bg-success'>BUENO</span>";
@@ -51,7 +59,7 @@ if (isset($_GET['op'])){
           }
 
           echo "
-            <tr>
+            <tr $rowStyle>
               <td class='text-center'>{$i}</td>
               <td class='text-center'><img style='width:30px' src='img/$r->foto'/></td>
               <td class='text-center'>{$r->cod_patrimonial}</td>
@@ -166,12 +174,21 @@ if (isset($_GET['op'])){
       echo json_encode($data);
     }
 
+    if ($_GET['op'] == 'consultarTimeline') {
+
+        $data = $activo->consultarTimeline([
+            "_idactivo" => $_GET["idactivo"]
+        ]);
+
+        echo json_encode($data);
+        exit;
+    }
+
     if ($_GET['op'] == 'registrarMovPrestamo'){
 
         $activo->registrarMovPrestamo([
             "_idactivo"         => $_GET["idactivo"],
             "_tipo"             => $_GET["mov_idtipo"],
-            "_fecha"            => $_GET["mov_fecha"],
 
             // Responsable actual (quien tiene el activo)
             "_responsable_actual" => $_GET["pres_responsable"],
@@ -184,6 +201,30 @@ if (isset($_GET['op'])){
 
             // Motivo
             "_motivo"            => $_GET["prestamo_motivo"]
+        ]);
+    }
+
+    if ($_GET['op'] == 'registrarMovTransferencia'){
+
+        $activo->registrarMovTransferencia([
+            "_idactivo"         => $_GET["idactivo"],
+            "_tipo"             => $_GET["mov_idtipo"],
+
+            // Responsable actual (quien tiene el activo)
+            "_transf_responsable_actual" => $_GET["transf_responsable_actual"],
+
+            // responsable destino
+            "_mov_responsable" => $_GET["mov_responsable"],
+
+            // sede destino
+            "_sede_destino"            => $_GET["sede_destino"],
+
+            // Motivo
+            "_transferencia_motivo"            => $_GET["transferencia_motivo"],
+
+            // dependencia_destino
+            "_dependencia_destino"            => $_GET["dependencia_destino"]
+
         ]);
     }
 

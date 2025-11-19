@@ -26,5 +26,52 @@ $(document).ready(function(){
         }
     });
 
+    function cargarMovimientosActivos(id_activo) {
+        $.ajax({
+            url: "controllers/Activo.controller.php",
+            type: "GET",
+            data: { 
+            op: "consultarTimeline",
+            idactivo: id_activo 
+            },
+            dataType: "JSON",
+            success: function (data) {
 
+            let html = "";
+
+            if (data.length === 0) {
+                html = `<p class="text-muted text-center">No hay movimientos registrados.</p>`;
+            } else {
+                data.forEach(mov => {
+
+                html += `
+                    <div class="time-label">
+                    <span class="bg-info">${mov.fecha}</span>
+                    </div>
+
+                    <div>
+                    <i class="fas fa-exchange-alt bg-primary"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fas fa-clock"></i> ${mov.hora}</span>
+
+                        <h3 class="timeline-header"><b>${mov.tipo_mov}</b></h3>
+
+                        <div class="timeline-body">
+                        De: <b>${mov.responsable_origen ?? "—"}</b><br>
+                        A: <b>${mov.responsable_destino ?? "—"}</b><br>
+                        Sede destino: <b>${mov.sede ?? "—"}</b><br>
+                        Área destino: <b>${mov.dependencia ?? "—"}</b>
+                        </div>
+                    </div>
+                    </div>
+                `;
+                });
+            }
+
+            $("#timeline_movimientos").html(html);
+            }
+        });
+    }
+
+    cargarMovimientosActivos(idactivo);
 });

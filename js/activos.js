@@ -405,7 +405,7 @@ $(document).ready(function(){
                     let data = JSON.parse(resultado); // ← IMPORTANTE
                     $("#idresponsable").val(data[0].id_administrativo);
                     $("#pres_responsable").val(data[0].npersona);
-                    $("#transf_responsable").val(data[0].npersona);
+                    $("#transf_responsable_actual").val(data[0].npersona);
 
                     txt_idactivo_mov.setAttribute("data-idactivo", data[0].id_activo);
 
@@ -655,6 +655,7 @@ $(document).ready(function(){
         } else if (tipo == "TRANSFERENCIA") {
             div_transferencia.classList.remove('asignar');
             div_prestamo.classList.add('asignar');
+            $("#foto_editar").val("");
         }
     });
 
@@ -662,13 +663,13 @@ $(document).ready(function(){
     function registrarMovimientoPrestamo(){
         let idactivo = $("#mov_idactivo").attr("data-idactivo");
         let mov_idtipo = $("#mov_idtipo").val();
-        let mov_fecha = $("#mov_fecha").val();
+        // let mov_fecha = $("#mov_fecha").val();
         let prestamo_tiempo = $("#prestamo_tiempo").val();
         let pres_responsable = $("#idresponsable").val();
         let resp_temporal = $("#resp_temporal").val();
         let prestamo_motivo = $("#prestamo_motivo").val();
         
-        if(mov_idtipo == "" || mov_fecha == "" || pres_responsable == "" || resp_temporal == "" || prestamo_tiempo == "" || prestamo_motivo == ""){
+        if(mov_idtipo == "" || pres_responsable == "" || resp_temporal == "" || prestamo_tiempo == "" || prestamo_motivo == ""){
             mostrarAlerta("warning", "¡Completar los campos necesarios!");
         }else{
             Swal.fire({
@@ -683,7 +684,6 @@ $(document).ready(function(){
                         'op' : 'registrarMovPrestamo',
                         'idactivo' : idactivo,
                         'mov_idtipo' : mov_idtipo,
-                        'mov_fecha' : mov_fecha,
                         'pres_responsable' : pres_responsable,
                         'resp_temporal' : resp_temporal,
                         'prestamo_tiempo' : prestamo_tiempo,
@@ -695,14 +695,15 @@ $(document).ready(function(){
                         type: 'GET',
                         data: datos,
                         success: function(e){
-                            mostrarAlerta("success", "¡Registrado con éxito!");
+                            mostrarAlerta("success", "¡Activo en Préstamo con éxito!");
                             $("#formMovimiento")[0].reset();
-                            $("#select_responsable").val(null).trigger('change');
-                            $("#sede_destino").val(null).trigger('change');
-                            $("#dependencia_destino").val(null).trigger('change');
+                            $("#select_responsable").val("null").trigger('change');
+                            $("#sede_destino").val("");
+                            $("#dependencia_destino").val("");
                             div_transferencia.classList.add('asignar');
                             div_prestamo.classList.add('asignar');
                             $("#modalMovimiento").modal("hide");
+                            listarActivos();
                         }
                     });
                 }
@@ -725,13 +726,14 @@ $(document).ready(function(){
     function registrarMovimientoTransferencia(){
         let idactivo = $("#mov_idactivo").attr("data-idactivo");
         let mov_idtipo = $("#mov_idtipo").val();
-        let mov_fecha = $("#mov_fecha").val();
-        let prestamo_tiempo = $("#prestamo_tiempo").val();
-        let pres_responsable = $("#pres_responsable").val();
-        let resp_temporal = $("#resp_temporal").val();
-        let prestamo_motivo = $("#prestamo_motivo").val();
+
+        let transf_responsable_actual = $("#idresponsable").val();
+        let mov_responsable = $("#mov_responsable").val(); //destino responsable
+        let sede_destino = $("#sede_destino").val();
+        let dependencia_destino = $("#dependencia_destino").val();
+        let transferencia_motivo = $("#transferencia_motivo").val();
         
-        if(mov_idtipo == "" || mov_fecha == "" || pres_responsable == "" || resp_temporal == "" || prestamo_tiempo == "" || prestamo_motivo == ""){
+        if(mov_idtipo == "" || transf_responsable_actual == "" || mov_responsable == "" || sede_destino == "" || dependencia_destino == "" || transferencia_motivo == ""){
             mostrarAlerta("warning", "¡Completar los campos necesarios!");
         }else{
             Swal.fire({
@@ -746,11 +748,11 @@ $(document).ready(function(){
                         'op' : 'registrarMovTransferencia',
                         'idactivo' : idactivo,
                         'mov_idtipo' : mov_idtipo,
-                        'mov_fecha' : mov_fecha,
-                        'pres_responsable' : pres_responsable,
-                        'resp_temporal' : resp_temporal,
-                        'prestamo_tiempo' : prestamo_tiempo,
-                        'prestamo_motivo' : prestamo_motivo
+                        'transf_responsable_actual' : transf_responsable_actual,
+                        'mov_responsable' : mov_responsable,
+                        'sede_destino' : sede_destino,
+                        'dependencia_destino' : dependencia_destino,
+                        'transferencia_motivo' : transferencia_motivo
                     };
                     console.log(datos);
                     $.ajax({
@@ -758,9 +760,15 @@ $(document).ready(function(){
                         type: 'GET',
                         data: datos,
                         success: function(e){
-                            mostrarAlerta("success", "¡Registrado con éxito!");
-                            $("#formularioA")[0].reset();
-                            listarProductosFarmaciaPrueba();
+                            mostrarAlerta("success", "¡Activo Transferido con éxito!");
+                            $("#formMovimiento")[0].reset();
+                            $("#mov_responsable").val(null).trigger('change');
+                            $("#sede_destino").val("");
+                            $("#dependencia_destino").val("");
+                            div_transferencia.classList.add('asignar');
+                            div_prestamo.classList.add('asignar');
+                            $("#modalMovimiento").modal("hide");
+                            listarActivos();
                         }
                     });
                 }
@@ -805,6 +813,9 @@ $(document).ready(function(){
             });
         }
     }
+
+    
+
 
     function listarSalidas(){
         $.ajax({

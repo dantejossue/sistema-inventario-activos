@@ -190,6 +190,27 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
   </div>
 </div>
 
+<!-- CARD DE MOVIMIENTOS DEL ACTIVO -->
+<div class="row mt-3">
+  <div class="col-md-12">
+    <div class="card card-secondary">
+      <div class="card-header">
+        <h3 class="card-title"><b>Movimientos del Activo</b></h3>
+      </div>
+
+      <div class="card-body">
+
+        <div id="timeline_movimientos" class="timeline">
+          <!-- LOS MOVIMIENTOS SE RENDERIZARÁN AQUÍ DESDE detalle_activo.js -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 
 <script src="js/detalle_activo.js"></script>
 

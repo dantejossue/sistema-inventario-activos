@@ -26,7 +26,36 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
                     <select name="categoriaselect" id="categoriaselect" class="form-control">
                     </select>
                 </div>
+
             </div>
+            <div class="d-flex justify-content-end mr-4" style="gap: 8px; align-items:center;">
+                <strong>Activos en Calidad de:&nbsp;</strong>
+
+                <!-- Préstamo: fondo azul claro + texto azul oscuro -->
+                <span style="
+                    background-color:#e8f4ff;
+                    color:#0a3a63;        /* tono fuerte derivado del azul */
+                    padding:4px 8px;
+                    border-radius:4px;
+                    font-weight:600;
+                ">
+                    Préstamo
+                </span>
+
+                <span>|</span>
+
+                <!-- Transferencia: fondo crema claro + texto naranja oscuro -->
+                <span style="
+                    background-color:#fff7e6;
+                    color:#8a4f00;        /* tono fuerte derivado del color ámbar */
+                    padding:4px 8px;
+                    border-radius:4px;
+                    font-weight:600;
+                ">
+                    Transferencia
+                </span>
+            </div>
+
             <div class="card-body table-responsive">
 
                 <table class="table text-center" id="tablaActivo">
@@ -363,7 +392,7 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
                     <div id="div_transferencia" class="asignar">
                         <div class="form-group">
                             <label>Responsable Actual:</label>
-                            <input type="text" class="form-control" id="transf_responsable" readonly>
+                            <input type="text" class="form-control" id="transf_responsable_actual" readonly>
                         </div>
                         <div class="form-group">
                             <label>Responsable destino:</label>

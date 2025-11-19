@@ -35,7 +35,15 @@ class Activo extends ModelMaster{
         }catch(Exception $error){
             die($error->getMessage());
         }
-    }
+  }
+
+  public function registrarMovTransferencia(array $data){
+        try{
+            parent::execProcedure($data, "spu_movimientoTransferencia_registrar", false);
+        }catch(Exception $error){
+            die($error->getMessage());
+        }
+  }
 
   public function modificarActivo(array $data){
     try{
@@ -56,6 +64,14 @@ class Activo extends ModelMaster{
   public function getActivo(array $data){
       try{
           return parent::execProcedure($data, "spu_activo_getdata", true);
+      }catch(Exception $error){
+          die($error->getMessage());
+      }
+  }
+
+  public function consultarTimeline(array $data){
+      try{
+          return parent::execProcedure($data, "spu_mov_consultarTimeline", true);
       }catch(Exception $error){
           die($error->getMessage());
       }
