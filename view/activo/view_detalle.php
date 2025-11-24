@@ -7,94 +7,6 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
 }
 ?>
 
-<style>
-  /* ------------------------------
-     ESTILO MODERNO DEL CONTENEDOR
-     ------------------------------ */
-  .foto-card {
-    padding: 0;
-    /* border: 1px solid #dcdcdc;
-    border-radius: 10px; */
-    overflow: hidden;
-    /* background: white;
-    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.15); */
-    position: relative;
-    transition: transform 0.3s ease;
-  }
-
-  /* ------------------------------
-     ICONO PARA AMPLIAR IMAGEN
-     ------------------------------ */
-  .zoom-icon {
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    padding: 6px 8px;
-    border-radius: 50%;
-    font-size: 18px;
-    cursor: pointer;
-    opacity: 0;
-    transition: 0.3s;
-  }
-
-  .foto-card:hover .zoom-icon {
-    opacity: 1;
-  }
-
-  /* ------------------------------------
-     IMAGEN DEL ACTIVO (ALTURA FIJA)
-     ------------------------------------ */
-  #foto_activo {
-    width: 100%;
-    height: 500px;
-    object-fit: contain;
-    background: #f5f5f5;
-    transition: transform 0.3s ease;
-    cursor: pointer;
-  }
-
-  /* Zoom suave al pasar el mouse */
-  .foto-card:hover #foto_activo {
-    transform: scale(1.05);
-  }
-
-
-  /* ------------------------------
-     MODAL FULLSCREEN PERSONALIZADO
-     ------------------------------ */
-  .modal-img-full {
-    display: none;
-    position: fixed;
-    z-index: 99999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.9);
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .modal-img-full img {
-    max-width: 95%;
-    max-height: 95%;
-    border-radius: 10px;
-    box-shadow: 0px 5px 20px rgba(255, 255, 255, 0.3);
-  }
-
-  .modal-img-full .close-modal {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    color: white;
-    font-size: 40px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-</style>
 
 <!-- MODAL FULLSCREEN -->
 <div id="modalFullscreen" class="modal-img-full">
@@ -123,7 +35,7 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
 <div class="row">
   <div class="col-md-12">
 
-    <div class="card card-primary">
+    <div class="card">
       <div class="card-body">
 
         <div class="row">
@@ -193,7 +105,7 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
 <!-- CARD DE MOVIMIENTOS DEL ACTIVO -->
 <div class="row mt-3">
   <div class="col-md-12">
-    <div class="card card-secondary">
+    <div class="card">
       <div class="card-header">
         <h3 class="card-title"><b>Movimientos del Activo</b></h3>
       </div>

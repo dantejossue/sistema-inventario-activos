@@ -32,26 +32,14 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
                 <strong>Activos en Calidad de:&nbsp;</strong>
 
                 <!-- Préstamo: fondo azul claro + texto azul oscuro -->
-                <span style="
-                    background-color:#e8f4ff;
-                    color:#0a3a63;        /* tono fuerte derivado del azul */
-                    padding:4px 8px;
-                    border-radius:4px;
-                    font-weight:600;
-                ">
+                <span class="bg-suave-azul">
                     Préstamo
                 </span>
 
-                <span>|</span>
+                <span><b>|</b></span>
 
                 <!-- Transferencia: fondo crema claro + texto naranja oscuro -->
-                <span style="
-                    background-color:#fff7e6;
-                    color:#8a4f00;        /* tono fuerte derivado del color ámbar */
-                    padding:4px 8px;
-                    border-radius:4px;
-                    font-weight:600;
-                ">
+                <span class="bg-suave-ambar">
                     Transferencia
                 </span>
             </div>

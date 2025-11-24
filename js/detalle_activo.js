@@ -46,18 +46,18 @@ $(document).ready(function(){
 
                 html += `
                     <div class="time-label">
-                    <span class="bg-info">${mov.fecha}</span>
+                    <span class="bg-danger">${mov.fecha}</span>
                     </div>
 
                     <div>
                     <i class="fas fa-exchange-alt bg-primary"></i>
                     <div class="timeline-item">
-                        <span class="time"><i class="fas fa-clock"></i> ${mov.hora}</span>
+                        <span class="time" style="font-size:15px"><b><i class="fas fa-clock"></i> ${mov.hora}</b></span>
 
-                        <h3 class="timeline-header"><b>${mov.tipo_mov}</b></h3>
+                        <h3 class="timeline-header"><b>En calidad de: <span class="bg-suave-azul">${mov.tipo_mov}</span></b></h3>
 
                         <div class="timeline-body">
-                        De: <b>${mov.responsable_origen ?? "—"}</b><br>
+                        <span class="">De: <b>${mov.responsable_origen ?? "—"}</b></span><br>
                         A: <b>${mov.responsable_destino ?? "—"}</b><br>
                         Sede destino: <b>${mov.sede ?? "—"}</b><br>
                         Área destino: <b>${mov.dependencia ?? "—"}</b>
