@@ -48,25 +48,35 @@ $(document).ready(function(){
                         
                         case "PRESTAMO":
                             html += `
-                                <div class="time-label">
+                            <div class="time-label">
                                 <span class="bg-danger">${mov.fecha}</span>
-                                </div>
-            
-                                <div>
+                            </div>
+                            
+                            <div>
                                 <i class="fas fa-exchange-alt bg-primary"></i>
-                                <div class="timeline-item">
+                                <div class="timeline-item sin-fondo">
                                     <span class="time" style="font-size:15px"><b><i class="fas fa-clock"></i> ${mov.hora}</b></span>
-            
-                                    <h3 class="timeline-header"><b>En calidad de: <span class="bg-suave-azul">${mov.tipo_mov}</span></b></h3>
-            
+                                    <h3 class="timeline-header"><b>En calidad de: <span class="bg-suave-azul">${mov.tipo_mov}</span></b><br><br>
+                                                                        <span><b>Motivo: </b> ${mov.motivo}</span></h3>
+
                                     <div class="timeline-body">
-                                    <span class="">De: <b>${mov.responsable_origen ?? "—"}</b></span><br>
-                                    A: <b>${mov.responsable_destino ?? "—"}</b><br>
-                                    Sede destino: <b>${mov.sede ?? "—"}</b><br>
-                                    Área destino: <b>${mov.dependencia ?? "—"}</b>
+                                    <div class="d-flex">
+                                        <div class="callout callout-warning col-md-6 mr-3">
+                                            <h4 class="text-warning"><b>Origen</b></h4>
+                                            <span class="">Responsable: <b>${mov.responsable_origen ?? "—"}</b></span><br>
+                                            Sede: <b>${mov.sede_origen ?? "—"}</b><br>
+                                            Área: <b>${mov.dependencia_origen ?? "—"}</b>
+                                        </div>
+                                        <div class="callout callout-info col-md-6">
+                                            <h4 class="text-info"><b>Destino</b></h4>
+                                            Responsable Temporal: <b>${mov.responsable_destino ?? "—"}</b><br>
+                                            Sede destino: <b>${mov.sede_destino ?? "—"}</b><br>
+                                            Área destino: <b>${mov.dependencia_destino ?? "—"}</b>
+                                        </div>
+                                    </div>
                                     </div>
                                 </div>
-                                </div>
+                            </div>
                             `;
                         break
 
@@ -78,16 +88,27 @@ $(document).ready(function(){
             
                                 <div>
                                 <i class="fas fa-exchange-alt bg-primary"></i>
-                                <div class="timeline-item">
+                                <div class="timeline-item sin-fondo">
                                     <span class="time" style="font-size:15px"><b><i class="fas fa-clock"></i> ${mov.hora}</b></span>
             
-                                    <h3 class="timeline-header"><b>En calidad de: <span class="bg-suave-ambar">${mov.tipo_mov}</span></b></h3>
+                                    <h3 class="timeline-header"><b>En calidad de: <span class="bg-suave-ambar">${mov.tipo_mov}</span></b><br><br>
+                                                                        <span><b>Motivo: </b> ${mov.motivo}</span></h3>
             
                                     <div class="timeline-body">
-                                    <span class="">De: <b>${mov.responsable_origen ?? "—"}</b></span><br>
-                                    A: <b>${mov.responsable_destino ?? "—"}</b><br>
-                                    Sede destino: <b>${mov.sede ?? "—"}</b><br>
-                                    Área destino: <b>${mov.dependencia ?? "—"}</b>
+                                    <div class="d-flex">
+                                        <div class="callout callout-warning col-md-6 mr-3">
+                                            <h4 class="text-warning"><b>Origen</b></h4>
+                                            <span class="">Responsable: <b>${mov.responsable_origen ?? "—"}</b></span><br>
+                                            Sede: <b>${mov.sede_origen ?? "—"}</b><br>
+                                            Área: <b>${mov.dependencia_origen ?? "—"}</b>
+                                        </div>
+                                        <div class="callout callout-info col-md-6">
+                                            <h4 class="text-info"><b>Destino</b></h4>
+                                            Responsable Temporal: <b>${mov.responsable_destino ?? "—"}</b><br>
+                                            Sede destino: <b>${mov.sede_destino ?? "—"}</b><br>
+                                            Área destino: <b>${mov.dependencia_destino ?? "—"}</b>
+                                        </div>
+                                    </div>
                                     </div>
                                 </div>
                                 </div>

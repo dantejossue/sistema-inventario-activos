@@ -112,8 +112,10 @@ if ($_SESSION['nivelacceso'] == 'Médico') {
 
       <div class="card-body">
 
+      
         <div id="timeline_movimientos" class="timeline">
           <!-- LOS MOVIMIENTOS SE RENDERIZARÁN AQUÍ DESDE detalle_activo.js -->
+
         </div>
 
       </div>

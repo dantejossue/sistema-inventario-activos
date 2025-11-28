@@ -134,7 +134,7 @@ if (isset($_GET['op'])){
 
         if($valor->stock<=5){
           $color="red";$color2="white";
-        }else{
+        }else{ 
           $color="green";$color2="white";
         }
         echo "

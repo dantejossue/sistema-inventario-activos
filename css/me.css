@@ -100,3 +100,13 @@
     border-radius:4px;
     font-weight:600;
   }
+
+  .timeline-item.sin-fondo {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  .timeline-header{
+    border-bottom: none !important;
+  }
