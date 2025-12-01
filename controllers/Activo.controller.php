@@ -8,6 +8,26 @@ if (isset($_GET['op'])){
 
   $activo = new Activo();
 
+    if($_GET['op'] == 'cargarCalidadMovFiltro'){ 
+    $datosObtenidos = $activo->cargarCalidadMovFiltro();
+      foreach($datosObtenidos as $valor){
+        $nombre_estado = "";
+        if($valor -> estado_mov == "PRESTADO"){
+          $nombre_estado = "Préstamo";
+        }else if($valor -> estado_mov == "TRANSFERIDO"){
+          $nombre_estado = "Transeferencia";
+        }else if($valor -> estado_mov == "DEVUELTO"){
+          $nombre_estado = "Devuelto";
+        }else{
+          $nombre_estado = "Todos";
+        }
+          echo"
+          <option value='$valor->estado_mov'>$nombre_estado</option>
+          ";
+      }
+    //   echo json_encode($data);
+  }
+
     if ($_GET['op'] == 'activoYaRegistrado'){
         $datosObtenidos = $activo->activoYaRegistrado(["_codpatrimonial" => $_GET['txt_patrimonial']]);
         if(count($datosObtenidos) == 0){
@@ -58,6 +78,41 @@ if (isset($_GET['op'])){
               break;
           }
 
+          switch ($r->estado_mov) {
+            case 'PRESTADO':
+              $estado_mov = "<a class='dropdown-item mover asignar' href='#' data-idactivo='{$r->id_activo}'>
+                              <i class='fa fa-exchange-alt text-secondary'></i>&nbsp; Mover
+                            </a>
+                            <a class='dropdown-item devolucion' href='#' data-idactivo='{$r->id_activo}'>
+                              <i class='fa fa-undo text-success'></i>&nbsp; Devolución
+                            </a>";
+              break;
+            case 'TRANSFERIDO':
+              $estado_mov = "<a class='dropdown-item mover asignar' href='#' data-idactivo='{$r->id_activo}'>
+                              <i class='fa fa-exchange-alt text-secondary'></i>&nbsp; Mover
+                            </a>
+                            <a class='dropdown-item devolucion asignar' href='#' data-idactivo='{$r->id_activo}'>
+                              <i class='fa fa-undo text-success'></i>&nbsp; Devolución
+                            </a>";
+              break;
+            case 'DEVUELTO':
+              $estado_mov = "<a class='dropdown-item mover' href='#' data-idactivo='{$r->id_activo}'>
+                              <i class='fa fa-exchange-alt text-secondary'></i>&nbsp; Mover
+                            </a>
+                            <a class='dropdown-item devolucion asignar' href='#' data-idactivo='{$r->id_activo}'>
+                              <i class='fa fa-undo text-success'></i>&nbsp; Devolución
+                            </a>";
+              break;
+            default:
+              $estado_mov = "<a class='dropdown-item mover' href='#' data-idactivo='{$r->id_activo}'>
+                              <i class='fa fa-exchange-alt text-secondary'></i>&nbsp; Mover
+                            </a>
+                            <a class='dropdown-item devolucion asignar' href='#' data-idactivo='{$r->id_activo}'>
+                              <i class='fa fa-undo text-success'></i>&nbsp; Devolución
+                            </a>";
+              break;
+          }
+
           echo "
             <tr $rowStyle>
               <td class='text-center'>{$i}</td>
@@ -82,12 +137,7 @@ if (isset($_GET['op'])){
                     <a class='dropdown-item modificar' href='#' data-idactivo='{$r->id_activo}'>
                       <i class='fa fa-edit text-warning'></i>&nbsp; Editar
                     </a>
-                    <a class='dropdown-item mover' href='#' data-idactivo='{$r->id_activo}'>
-                      <i class='fa fa-exchange-alt text-secondary'></i>&nbsp; Mover
-                    </a>
-                    <a class='dropdown-item qr' href='#' data-idactivo='{$r->id_activo}'>
-                      <i class='fa fa-qrcode text-success'></i>&nbsp; Ver QR
-                    </a>
+                    {$estado_mov}
                     <div class='dropdown-divider'></div>
                     <a class='dropdown-item text-danger eliminar' href='#' data-idactivo='{$r->id_activo}'>
                       <i class='fa fa-trash'></i>&nbsp; Eliminar
@@ -174,6 +224,11 @@ if (isset($_GET['op'])){
       echo json_encode($data);
     }
 
+    if($_GET['op'] == 'traerActivoDevolucion'){
+      $data = $activo->traerActivoDevolucion(['_idactivo' => $_GET['idactivo']]);
+      echo json_encode($data);
+    }
+
     if ($_GET['op'] == 'consultarTimeline') {
 
         $data = $activo->consultarTimeline([
@@ -225,6 +280,16 @@ if (isset($_GET['op'])){
             // dependencia_destino
             "_dependencia_destino"            => $_GET["dependencia_destino"]
 
+        ]);
+    }
+
+    if ($_GET['op'] == 'registrarMovDevolucion'){
+
+        $activo->registrarMovDevolucion([
+            "_idactivo"         => $_GET["idactivo"],
+            "_mov_idtipo"         => $_GET["mov_idtipo"],
+            "_dev_responsable"         => $_GET["dev_responsable"],
+            "_dev_motivo"         => $_GET["dev_motivo"]
         ]);
     }
 

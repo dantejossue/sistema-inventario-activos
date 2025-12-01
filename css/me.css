@@ -101,6 +101,14 @@
     font-weight:600;
   }
 
+  .bg-suave-verde{
+    background-color: #e6f9e6; /* verde muy suave */
+      color: #1a5d1a;            /* tono fuerte derivado del verde */
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+  }
+
   .timeline-item.sin-fondo {
     background: transparent !important;
     box-shadow: none !important;

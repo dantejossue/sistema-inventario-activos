@@ -12,6 +12,14 @@ class Administrativo extends ModelMaster{
         }
     }
 
+    public function cargarAdministrativosFiltro(){
+        try{
+          return parent::getRows("spu_administrativoFiltro_cargar");
+        }catch(Exception $error){
+          die($error->getMessage());
+        }
+    }
+
 
     public function cargarOtrosAdministrativos(array $data){
         try{

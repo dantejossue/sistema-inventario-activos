@@ -18,6 +18,17 @@ if (isset($_GET['op'])){
     //   echo json_encode($data);
   }
 
+  if($_GET['op'] == 'cargarAdministrativosFiltro'){ 
+    $datosObtenidos = $administrativo->cargarAdministrativosFiltro();
+      echo "<option value='' selected disabled>Todos</option>";
+      foreach($datosObtenidos as $valor){
+          echo"
+          <option value='$valor->id_administrativo'>$valor->npersona</option>
+          ";
+      }
+    //   echo json_encode($data);
+  }
+
   if($_GET['op'] == 'cargarOtrosAdministrativos'){ 
     $datosObtenidos = $administrativo->cargarOtrosAdministrativos([
       '_idadministrativo' => $_GET['idadministrativo']

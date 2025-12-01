@@ -4,6 +4,14 @@ require_once '../core/model.master.php';
 
 class Activo extends ModelMaster{
 
+    public function cargarCalidadMovFiltro(){
+        try{
+          return parent::getRows("spu_activo_cargarCalidadMovFiltro");
+        }catch(Exception $error){
+          die($error->getMessage());
+        }
+    }
+
   public function registrarActivo(array $data){
       try{
         parent::execProcedure($data, "spu_activo_registro", false);
@@ -45,6 +53,14 @@ class Activo extends ModelMaster{
         }
   }
 
+  public function registrarMovDevolucion(array $data){
+        try{
+            parent::execProcedure($data, "spu_movimiento_registrarDevolucion", false);
+        }catch(Exception $error){
+            die($error->getMessage());
+        }
+  }
+
   public function modificarActivo(array $data){
     try{
         return parent::execProcedure($data,"spu_activo_editar", true);
@@ -64,6 +80,14 @@ class Activo extends ModelMaster{
   public function getActivo(array $data){
       try{
           return parent::execProcedure($data, "spu_activo_getdata", true);
+      }catch(Exception $error){
+          die($error->getMessage());
+      }
+  }
+
+  public function traerActivoDevolucion(array $data){
+      try{
+          return parent::execProcedure($data, "spu_activo_traerActivoDevolucion", true);
       }catch(Exception $error){
           die($error->getMessage());
       }

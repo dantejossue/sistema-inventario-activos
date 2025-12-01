@@ -7,6 +7,10 @@ $(document).ready(function(){
     var div_prestamo = document.querySelector("#div_prestamo");
     var txt_idactivo = document.querySelector("#txt_idactivo");
     var txt_idactivo_mov = document.querySelector("#mov_idactivo");
+    var txt_idactivo_mov_dev = document.querySelector("#mov_idactivo_dev");
+
+    var cod_patrimonial_dev = document.querySelector("#cod_patrimonial_dev");
+
     var botonActualizar = document.querySelector("#actualizar");
     var botonGuardar = document.querySelector("#registrar");
 
@@ -136,12 +140,54 @@ $(document).ready(function(){
         });
     }
 
+    function cargarCategoriasFiltro(select){ 
+        var datos ={
+            'op': 'cargarCategoriasFiltro'
+        };
+        $.ajax({
+            url : 'controllers/Categoria.controller.php',
+            type: 'GET',
+            data: datos,
+            success:function(e){
+                $(select).html(e);
+            }
+        });
+    }
+
     function cargarAdministrativos(select){ 
         var datos ={
             'op': 'cargarAdministrativo'
         };
         $.ajax({
             url : 'controllers/Administrativo.controller.php',
+            type: 'GET',
+            data: datos,
+            success:function(e){
+                $(select).html(e);
+            }
+        });
+    }
+
+    function cargarAdministrativosFiltro(select){ 
+        var datos ={
+            'op': 'cargarAdministrativosFiltro'
+        };
+        $.ajax({
+            url : 'controllers/Administrativo.controller.php',
+            type: 'GET',
+            data: datos,
+            success:function(e){
+                $(select).html(e);
+            }
+        });
+    }
+
+    function cargarCalidadMovFiltro(select){ 
+        var datos ={
+            'op': 'cargarCalidadMovFiltro'
+        };
+        $.ajax({
+            url : 'controllers/Activo.controller.php',
             type: 'GET',
             data: datos,
             success:function(e){
@@ -420,6 +466,42 @@ $(document).ready(function(){
 
     });
 
+    $("#tablaActivo").on("click", ".devolucion", function(){
+
+        let idactivo = $(this).data("idactivo");
+
+        $("#mov_idactivo_dev").val(idactivo);
+        $("#mov_fecha_dev").val(new Date().toISOString().slice(0, 10)); // Fecha hoy
+
+        $("#modalMovimientoDev").modal("show");
+
+        var datos = {
+            'op' : 'traerActivoDevolucion',
+            'idactivo' : idactivo
+        }
+
+        $.ajax({
+            url: 'controllers/Activo.controller.php',
+            type: 'GET',
+            data: datos,
+            success: function(resultado){                        
+                if ($.trim(resultado) != ""){
+                    
+                    console.log("RESPUESTA:", resultado);
+                    
+                    let data = JSON.parse(resultado); // ← IMPORTANTE
+                    $("#idresponsable_dev").val(data[0].id_administrativo);
+                    $("#pres_responsable_dev").val(data[0].npersona);
+
+                    txt_idactivo_mov_dev.setAttribute("data-idactivo", data[0].id_activo);
+                    cod_patrimonial_dev.innerHTML = data[0].cod_patrimonial;
+
+                } else {
+                    mostrarAlerta("warning", "¡No encontramos registros!");
+                }
+            }
+        });
+    });
 
     function volverActivos(){
         window.location.href = "main.php?view=activo";
@@ -448,6 +530,7 @@ $(document).ready(function(){
         div_sede_dependencia.classList.add('asignar');
     });
 
+
     $("#cancelar_mov").click(function(){
         $("#formMovimiento")[0].reset();
         $("#select_responsable").val(null).trigger('change');
@@ -455,6 +538,10 @@ $(document).ready(function(){
         $("#dependencia_destino").val(null).trigger('change');
         div_transferencia.classList.add('asignar');
         div_prestamo.classList.add('asignar');
+    });
+
+    $("#cancelar_mov_dev").click(function(){
+        $("#formMovimientoDev")[0].reset();
     });
 
     function modificarActivo() {
@@ -545,6 +632,52 @@ $(document).ready(function(){
 
         });
 
+    }
+
+
+    function registrarMovimientoDevolucion(){
+        let idactivo = $("#mov_idactivo_dev").val();
+        let mov_idtipo = $("#mov_idtipo_dev").val();
+        // let mov_fecha = $("#mov_fecha").val();
+        let dev_responsable = $("#idresponsable_dev").val();
+        let dev_motivo = $("#devolucion_motivo").val();
+        
+        if(idactivo == "" || mov_idtipo == "" || dev_responsable == "" || dev_motivo == ""){
+            mostrarAlerta("warning", "¡Completar los campos necesarios!");
+        }else{
+            Swal.fire({
+                icon: 'warning',
+                title: '¿Confirma que desea registrar la restitución del activo?',
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Confirmar'
+            }).then((result) =>{
+                if(result.isConfirmed){
+                    var datos ={
+                        'op' : 'registrarMovDevolucion',
+                        'idactivo' : idactivo,
+                        'mov_idtipo' : mov_idtipo,
+                        'dev_responsable' : dev_responsable,
+                        'dev_motivo' : dev_motivo
+                    };
+                    console.log(datos);
+                    $.ajax({
+                        url: 'controllers/Activo.controller.php',
+                        type: 'GET',
+                        data: datos,
+                        success: function(e){
+                            mostrarAlerta("success", "¡La operación de restitución ha sido registrada correctamente!");
+
+                            $("#formMovimientoDev")[0].reset();
+                            $("#modalMovimientoDev").modal("hide");
+                            listarActivos();
+                        }
+                    });
+                }
+            });
+        }
     }
 
 
@@ -669,7 +802,7 @@ $(document).ready(function(){
         let resp_temporal = $("#resp_temporal").val();
         let prestamo_motivo = $("#prestamo_motivo").val();
         
-        if(mov_idtipo == "" || pres_responsable == "" || resp_temporal == "" || prestamo_tiempo == "" || prestamo_motivo == ""){
+        if(mov_idtipo == "" || pres_responsable == "" || resp_temporal == undefined || prestamo_tiempo == "" || prestamo_motivo == ""){
             mostrarAlerta("warning", "¡Completar los campos necesarios!");
         }else{
             Swal.fire({
@@ -898,12 +1031,16 @@ $(document).ready(function(){
     cargarCategorias("#idcategoriasalida");
     cargarCategorias("#idcategoria");
     cargarCategorias("#idcategoriamodal");
-    cargarCategorias("#categoriaselect");
+    cargarCategoriasFiltro("#filtro_categoria");
     cargarCategorias("#idcategoria_editar");
     cargarAdministrativos("#select_responsable");
     cargarAdministrativos("#select_responsable_editar");
+    cargarAdministrativosFiltro("#filtro_responsable");
+
+    cargarCalidadMovFiltro("#filtro_calidad");
     
     
     $("#registrar_mov").click(validarTipoMov);
+    $("#registrar_mov_dev").click(registrarMovimientoDevolucion);
     
 });

@@ -17,6 +17,17 @@ if (isset($_GET['op'])){
         }
     //   echo json_encode($data);
     }
+
+    if($_GET['op'] == 'cargarCategoriasFiltro'){ 
+      $datosObtenidos = $categoria->cargarCategoriasFiltro();
+        echo "<option value=''>Todos</option>";
+        foreach($datosObtenidos as $valor){
+            echo"
+            <option value='$valor->id_categoria'>$valor->nombre_categoria</option>
+            ";
+        }
+    //   echo json_encode($data);
+    }
   
 
   if($_GET['op']  == 'ListarCategorias'){              

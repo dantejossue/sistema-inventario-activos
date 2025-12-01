@@ -11,6 +11,14 @@ class Categoria extends ModelMaster{
           die($error->getMessage());
         }
     }
+
+    public function cargarCategoriasFiltro(){
+        try{
+          return parent::getRows("spu_categoriaFiltro_cargar");
+        }catch(Exception $error){
+          die($error->getMessage());
+        }
+    }
     
     public function registrarCategoria(array $data){
         try{
